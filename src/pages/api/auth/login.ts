@@ -8,8 +8,7 @@ export async function POST(context: APIContext): Promise<Response> {
     const email = formData.get("email");
     if (
         typeof email !== "string" ||
-        email.length < 3 ||
-        email.length > 31
+        email.length < 3
     ) {
         return new Response(JSON.stringify({ error: "Invalid email" }), {
             status: 400
@@ -52,5 +51,5 @@ export async function POST(context: APIContext): Promise<Response> {
     const sessionCookie = lucia.createSessionCookie(session.id);
     context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
-    return context.redirect("/admin");
+    return context.redirect("/");
 }

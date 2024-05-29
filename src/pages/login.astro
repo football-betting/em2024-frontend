@@ -1,17 +1,17 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
 
 const metaTitle = 'Login';
 
 const user = Astro.locals.user;
 if (user) {
-  return Astro.redirect("/admin");
+  return Astro.redirect("/");
 }
 
 ---
 
 <Layout title={metaTitle}>
-  
+
   <div class="flex flex-col md:pt-52 pt-20 justify-center items-center mb-20">
     <div class="text-indigo-600 text-4xl font-bold text-center pb-3 mx-auto">
       Login
@@ -30,7 +30,10 @@ if (user) {
           <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium leading-6 dark:text-gray-200">Passwort</label>
             <div class="text-sm">
-              <a href="/admin/password-forget" class="font-semibold text-indigo-600 hover:text-indigo-500">Passwort vergessen?</a>
+              <a href="/password-forget" class="font-semibold text-indigo-600 hover:text-indigo-500">Passwort vergessen?</a>
+            </div>
+            <div class="text-sm">
+              <a href="/signup" class="font-semibold text-indigo-600 hover:text-indigo-500">Registieren</a>
             </div>
           </div>
           <div class="mt-2">
@@ -45,7 +48,7 @@ if (user) {
       </form>
     </div>
   </div>
-  
+
 </Layout>
 
 <script>
