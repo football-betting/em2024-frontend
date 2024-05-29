@@ -43,7 +43,7 @@
   "type": "module",
   "module": "index.ts",
   "devDependencies": {
-    "@types/bun": "^1.1.1",
+    "@types/bun": "latest",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.5.3",
     "dotenv": "^16.4.5",

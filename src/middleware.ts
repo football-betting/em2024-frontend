@@ -3,7 +3,7 @@ import { verifyRequestOrigin } from "lucia";
 import {defineMiddleware} from "astro/middleware";
 
 export const onRequest = defineMiddleware(async (context, next) => {
-    if (context.request.method !== "GET") {
+    if (context.request.method !== "GET" && context.request.headers.get("Origin") !== "RUST_APPLICATION") {
         const originHeader = context.request.headers.get("Origin");
         const hostHeader = context.request.headers.get("Host");
         if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
