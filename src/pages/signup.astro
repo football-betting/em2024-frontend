@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const metaTitle = 'Regstirung';
+---
+
+<Layout title={metaTitle}>
+    <h1>Create an account</h1>
+    <form method="post" action="/api/user">
+        <label for="email">Email</label>
+        <input name="email" id="email" /><br />
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" /><br />
+
+        <label for="firstName">Firstname</label>
+        <input name="firstName" id="firstName" /><br />
+
+        <label for="lastName">Lastname</label>
+        <input name="lastName" id="lastName" /><br />
+
+        <label for="department">Department</label>
+        <input name="department" id="department" /><br />
+
+        <button>Continue</button>
+        <p id="form-error"></p>
+    </form>
+    <a href="/login">Sign in</a>
+</Layout>
+<script>
+    const errorMessageElement = document.getElementById("form-error")!;
+
+    document.forms[0].addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorMessageElement.innerText = "";
+        const formElement = e.target as HTMLFormElement;
+        const response = await fetch(formElement.action, {
+            method: formElement.method,
+            body: new FormData(formElement)
+        });
+        if (response.ok) {
+            window.location.href = "/";
+        } else {
+            errorMessageElement.innerText = (await response.json()).error;
+        }
+    });
+</script>

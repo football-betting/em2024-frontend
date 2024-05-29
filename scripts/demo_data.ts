@@ -1,6 +1,5 @@
 import db from "../src/core/db";
 import * as schema from "../db/schemas/schema";
-import {eq} from "drizzle-orm";
 import {Argon2id} from "oslo/password";
 
 
