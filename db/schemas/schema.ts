@@ -5,7 +5,7 @@ export const match = sqliteTable('match', {
     homeTeam: text('homeTeam', { mode: 'json' }).notNull(),
     awayTeam: text('awayTeam', { mode: 'json' }).notNull(),
     status: text('status').notNull(),
-    utcDate: integer('end', { mode: 'timestamp' }).notNull(),
+    utcDate: integer('utcDate', { mode: 'timestamp' }).notNull(),
     score: text('score', { mode: 'json' }),
     homeScore: integer('homeScore'),
     awayScore: integer('awayScore'),
@@ -15,6 +15,9 @@ export const user = sqliteTable('user', {
     id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
     email: text('email').notNull().unique(),
     password: text('password').notNull(),
+    firstName: text('firstName').notNull(),
+    lastName: text('lastName').notNull(),
+    department: text('department').notNull(),
 })
 
 export const session = sqliteTable('session', {

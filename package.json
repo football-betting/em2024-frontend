@@ -37,7 +37,8 @@
     "astro": "astro",
     "generate-migration": "drizzle-kit generate:sqlite",
     "migrate": "tsx ./scripts/migrate.ts",
-    "init-site": "$npm_execpath run generate-migration && $npm_execpath run migrate && tsx ./scripts/init.ts"
+    "init": "$npm_execpath run generate-migration && $npm_execpath run migrate",
+    "init-demo-data": "$npm_execpath run generate-migration && $npm_execpath run migrate && tsx ./scripts/demo_data.ts"
   },
   "type": "module",
   "module": "index.ts",
