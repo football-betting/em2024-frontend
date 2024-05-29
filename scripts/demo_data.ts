@@ -6,13 +6,13 @@ import {Argon2id} from "oslo/password";
 
 
 const users = [
-    { email: 'john@doe.com', firstName: 'John', lastName: 'Doe', department: 'Langenfeld' },
-    { email: 'toni@kroos.de', firstName: 'Toni', lastName: 'Kroos', department: 'Langenfeld' },
-    { email: 'philipp@lahm.de', firstName: 'Philipp', lastName: 'Lahm', department: 'Langenfeld' },
-    { email: 'lukas@podolski.pl', firstName: 'Lukas', lastName: 'Podolski', department: 'Langenfeld' },
-    { email: 'robbie@fowler.com', firstName: 'Robbie', lastName: 'Fowler', department: 'London' },
-    { email: 'bobby@moore.com', firstName: 'Bobby', lastName: 'Moore', department: 'London' },
-    { email: 'steve@mcmanaman.com', firstName: 'Steve', lastName: 'McManaman', department: 'London' }
+    { email: 'john@doe.com', firstName: 'John', lastName: 'Doe', department: 'Langenfeld', winner: 'DE', secretWinner: 'EN' },
+    { email: 'toni@kroos.de', firstName: 'Toni', lastName: 'Kroos', department: 'Langenfeld', winner: 'DE', secretWinner: 'FR' },
+    { email: 'philipp@lahm.de', firstName: 'Philipp', lastName: 'Lahm', department: 'Langenfeld', winner: 'ES', secretWinner: 'EN' },
+    { email: 'lukas@podolski.pl', firstName: 'Lukas', lastName: 'Podolski', department: 'Langenfeld', winner: 'PL', secretWinner: 'DE' },
+    { email: 'robbie@fowler.com', firstName: 'Robbie', lastName: 'Fowler', department: 'London', winner: 'NL', secretWinner: 'EN' },
+    { email: 'bobby@moore.com', firstName: 'Bobby', lastName: 'Moore', department: 'London', winner: 'EN', secretWinner: 'DE' },
+    { email: 'steve@mcmanaman.com', firstName: 'Steve', lastName: 'McManaman', department: 'London', winner: 'FR', secretWinner: 'EN' }
 ];
 
 console.log('Import users...');
@@ -23,7 +23,9 @@ for (const user of users) {
             password: await new Argon2id().hash('test123'),
             firstName: user.firstName,
             lastName: user.lastName,
-            department: user.department
+            department: user.department,
+            winner: user.winner,
+            secretWinner: user.secretWinner
         });
         console.log(`User inserted: ${user.email}`);
     } catch (error) {
@@ -67,13 +69,13 @@ const now = new Date();
 const games = [
     {
         id: 1,
-        homeTeam: JSON.stringify(land.en),
-        awayTeam: JSON.stringify(land.nl),
+        homeTeam: JSON.stringify(land.de),
+        awayTeam: JSON.stringify(land.es),
         status: "scheduled",
-        utcDate: new Date(now.getTime() + 3600000),
+        utcDate: new Date(now.getTime() - 86400000),
         score: null,
-        homeScore: null,
-        awayScore: null
+        homeScore: 4,
+        awayScore: 2
     },
     {
         id: 2,
@@ -87,13 +89,13 @@ const games = [
     },
     {
         id: 3,
-        homeTeam: JSON.stringify(land.de),
-        awayTeam: JSON.stringify(land.es),
+        homeTeam: JSON.stringify(land.en),
+        awayTeam: JSON.stringify(land.nl),
         status: "scheduled",
-        utcDate: new Date(now.getTime() - 86400000),
+        utcDate: new Date(now.getTime() + 3600000),
         score: null,
-        homeScore: 4,
-        awayScore: 2
+        homeScore: null,
+        awayScore: null
     },
     {
         id: 4,

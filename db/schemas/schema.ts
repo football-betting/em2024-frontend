@@ -18,6 +18,8 @@ export const user = sqliteTable('user', {
     firstName: text('firstName').notNull(),
     lastName: text('lastName').notNull(),
     department: text('department').notNull(),
+    winner: text('winner').notNull(),
+    secretWinner: text('secretWinner').notNull(),
 })
 
 export const session = sqliteTable('session', {

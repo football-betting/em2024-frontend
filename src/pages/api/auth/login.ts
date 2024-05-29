@@ -16,7 +16,7 @@ export async function POST(context: APIContext): Promise<Response> {
     }
 
     const password = formData.get("password");
-    if (typeof password !== "string" || password.length < 8 || password.length > 255) {
+    if (typeof password !== "string" || password.length < 2 || password.length > 255) {
         return new Response(JSON.stringify({ error: "Invalid password" }), {
             status: 400
         });
@@ -27,7 +27,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!existingUser) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password"
+                error: "Incorrect email or password 1"
             }),
             {
                 status: 400
@@ -39,7 +39,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!validPassword) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password"
+                error: "Incorrect email or password 2"
             }),
             {
                 status: 400

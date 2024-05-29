@@ -1,10 +1,15 @@
 ---
 import AdminLayout from "../layouts/AdminLayout.astro";
+import {getFutureMatch} from "../lib/match";
+
 
 const user = Astro.locals.user;
 if (!user) {
     return Astro.redirect("/login");
 }
+
+const matches = await getFutureMatch();
+console.log(matches);
 
 const list = [
     {
