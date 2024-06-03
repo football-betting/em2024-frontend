@@ -1,0 +1,48 @@
+/* Chakra Petch Font - Regular */
+@font-face {
+    font-family: 'Chakra Petch';
+    src: url('/fonts/ChakraPetch-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Bebas Neue Font - Regular */
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('/fonts/BebasNeue-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Gilroy Font - Regular */
+@font-face {
+    font-family: 'Gilroy';
+    src: url('/fonts/Gilroy-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Chakra Petch Font - Italic */
+@font-face {
+    font-family: 'Chakra Petch';
+    src: url('/fonts/ChakraPetch-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* NoteSans Font - Regular */
+@font-face {
+    font-family: 'Note Sans';
+    src: url('/fonts/NotoSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.gilroy {
+    font-family: 'Gilroy', sans-serif;
+}
+
+.note_sans {
+    font-family: 'Note Sans', sans-serif;
+}
+
