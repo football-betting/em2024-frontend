@@ -2,7 +2,6 @@ import db from "../core/db.ts";
 import {eq} from "drizzle-orm";
 import {user} from "../../db/schemas/schema.ts";
 import type {DatabaseUser} from "../interfaces/user.ts";
-import {Argon2id} from "oslo/password";
 
 export async function getUserByEmail(email: string): Promise<DatabaseUser | undefined> {
     return db.query.user.findFirst({where: eq(user.email, email)});
@@ -19,10 +18,12 @@ export async function getAllUser(): Promise<DatabaseUser[] | undefined> {
 export async function createUser(newUser: DatabaseUser) {
     await db.insert(user).values({
         email: newUser.email,
-        password: await new Argon2id().hash(newUser.password),
+        password: newUser.password,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         department: newUser.department,
+        winner: newUser.winner,
+        secretWinner: newUser.secretWinner
     });
 }
 

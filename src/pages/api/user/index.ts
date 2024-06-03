@@ -1,15 +1,18 @@
 import type { APIRoute } from "astro";
 import {createUser, getUserByEmail} from "../../../lib/user.ts";
+import {Argon2id} from "oslo/password";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
     const formData = await request.formData();
 
     const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
+    let password = formData.get("password")?.toString();
 
     const firstName = formData.get("firstName")?.toString();
     const lastName = formData.get("lastName")?.toString();
     const department = formData.get("department")?.toString();
+    const winner = formData.get("winner")?.toString();
+    const secretWinner = formData.get("secretWinner")?.toString();
 
     let missingFields = [];
 
@@ -18,8 +21,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     if (!firstName) missingFields.push("firstName");
     if (!lastName) missingFields.push("lastName");
     if (!department) missingFields.push("department");
+    if (!winner) missingFields.push("winner");
+    if (!secretWinner) missingFields.push("secretWinner");
 
     const checkUser = await getUserByEmail(email);
+
     if (checkUser) {
         return new Response(
             JSON.stringify({
@@ -36,13 +42,14 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     }
 
     try {
-        await createUser({ email, password, firstName, lastName, department})
+        password = await new Argon2id().hash(password);
+        await createUser({ email, password, firstName, lastName, department, winner, secretWinner})
 
         return new Response();
     } catch (error) {
         return new Response(
             JSON.stringify({
-                error: "Username already used"
+                error: "Error " + error.toString()
             }),
              {
             status: 500,

@@ -27,7 +27,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!existingUser) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password 1"
+                error: "Incorrect email or password"
             }),
             {
                 status: 400
@@ -39,7 +39,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!validPassword) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password 2"
+                error: "Incorrect email or password"
             }),
             {
                 status: 400
