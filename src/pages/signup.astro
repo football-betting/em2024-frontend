@@ -1,103 +1,149 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Input from '../components/Input.astro';
+import Button from '../components/Button.astro';
+import ButtonLink from '../components/ButtonLink.astro';
 
-const metaTitle = 'Regstirung';
+const metaTitle = 'Konto erstellen';
+
+const user = Astro.locals.user;
+if (user) {
+    return Astro.redirect("/");
+}
+
 ---
 
 <Layout title={metaTitle}>
-    <h1>Create an account</h1>
-    <form method="post" action="/api/user">
-        <label for="email">Email</label>
-        <input name="email" id="email" /><br />
+    <div class="flex flex-col md:pt-12 pt-4 justify-center items-center mb-20">
+        <h1 class="text-center uppercase mx-auto">
+            Konto erstellen
+        </h1>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" /><br />
+        <div class="mt-1 sm:mx-auto sm:w-full sm:max-w-sm px-8 sm:px-0">
+            <div class="p-5 text-center">
+                Willkommen beim valantic Tippspiel. Noch ein paar Angaben von dir und schon kannst du mit dem Tippen loslegen:
+            </div>
 
-        <label for="firstName">Firstname</label>
-        <input name="firstName" id="firstName" /><br />
+            <p id="form-error" class="text-red-500"></p>
 
-        <label for="lastName">Lastname</label>
-        <input name="lastName" id="lastName" /><br />
+            <form class="space-y-6" action="/api/auth/login" method="POST">
+                <Input name="email" label="E-Mail" type="email" placeholder="Deine E-mail-Adresse"/>
+                <Input name="password" label="Passwort" type="password" placeholder="Vergib ein Passwort"/>
 
-        <label for="department">Department</label>
-        <input name="department" id="department" /><br />
+                <Input name="firstName" label="Name" placeholder="Deine Name"/>
+                <Input name="lastName" label="Nachname" placeholder="Dein Nachname"/>
 
-        <label for="winner">Winner</label>
-        <select name="winner" id="winner">
-            <option value=""></option>
-            <option value="ALB">Albanien</option>
-            <option value="BEL">Belgien</option>
-            <option value="DNK">Dänemark</option>
-            <option value="DEU">Deutschland</option>
-            <option value="ENG">England</option>
-            <option value="FRA">Frankreich</option>
-            <option value="GEO">Georgien</option>
-            <option value="HRV">Kroatien</option>
-            <option value="ITA">Italien</option>
-            <option value="HUN">Ungarn</option>
-            <option value="NLD">Niederlande</option>
-            <option value="POL">Polen</option>
-            <option value="PRT">Portugal</option>
-            <option value="ROU">Rumänien</option>
-            <option value="SCO">Schottland</option>
-            <option value="SRB">Serbien</option>
-            <option value="SVK">Slowakei</option>
-            <option value="SVN">Slowenien</option>
-            <option value="ESP">Spanien</option>
-            <option value="CZE">Tschechien</option>
-            <option value="TUR">Türkei</option>
-            <option value="UKR">Ukraine</option>
-            <option value="AUT">Österreich</option>
-            <option value="CHE">Schweiz</option>
-        </select>
 
-        <label for="secretWinner">secretWinner</label>
-        <select name="secretWinner" id="secretWinner">
-            <option value=""></option>
-            <option value="ALB">Albanien</option>
-            <option value="BEL">Belgien</option>
-            <option value="DNK">Dänemark</option>
-            <option value="DEU">Deutschland</option>
-            <option value="ENG">England</option>
-            <option value="FRA">Frankreich</option>
-            <option value="GEO">Georgien</option>
-            <option value="HRV">Kroatien</option>
-            <option value="ITA">Italien</option>
-            <option value="HUN">Ungarn</option>
-            <option value="NLD">Niederlande</option>
-            <option value="POL">Polen</option>
-            <option value="PRT">Portugal</option>
-            <option value="ROU">Rumänien</option>
-            <option value="SCO">Schottland</option>
-            <option value="SRB">Serbien</option>
-            <option value="SVK">Slowakei</option>
-            <option value="SVN">Slowenien</option>
-            <option value="ESP">Spanien</option>
-            <option value="CZE">Tschechien</option>
-            <option value="TUR">Türkei</option>
-            <option value="UKR">Ukraine</option>
-            <option value="AUT">Österreich</option>
-            <option value="CHE">Schweiz</option>
-        </select>
+                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
+                    <label for="department" class="note_sans block text-xs font-bold text-gray-400">Standort</label>
+                    <select name="department" id="department" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                        <option disabled selected value="">Dein Standort</option>
+                        <option value="Maintz">Mainz</option>
+                        <option value="Mannheim">Mannheim</option>
+                        <option value="Langenfeld">Langenfeld</option>
+                    </select>
+                </div>
 
-        <button>Continue</button>
-        <p id="form-error"></p>
-    </form>
-    <a href="/login">Sign in</a>
+                <div class="p-5 text-center">
+                    Wer gewinnt die EM? Gib bei der Registrierung zwei Tipps ab: Deinen Haupttipp für bis zu 15 Punkte und einen Geheimfavoriten für 7 Punkte. Änderungen sind danach nicht mehr möglich.
+                </div>
+
+                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
+                    <label for="winner" class="note_sans block text-xs font-bold text-gray-400">Gewinner</label>
+                    <select name="winner" id="winner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                        <option disabled selected value="">Wähle einen Gewinner.</option>
+                        <option value="ALB">Albanien</option>
+                        <option value="BEL">Belgien</option>
+                        <option value="DEU">Deutschland</option>
+                        <option value="DNK">Dänemark</option>
+                        <option value="ENG">England</option>
+                        <option value="FRA">Frankreich</option>
+                        <option value="GEO">Georgien</option>
+                        <option value="ITA">Italien</option>
+                        <option value="HRV">Kroatien</option>
+                        <option value="NLD">Niederlande</option>
+                        <option value="AUT">Österreich</option>
+                        <option value="POL">Polen</option>
+                        <option value="PRT">Portugal</option>
+                        <option value="ROU">Rumänien</option>
+                        <option value="SCO">Schottland</option>
+                        <option value="CHE">Schweiz</option>
+                        <option value="SRB">Serbien</option>
+                        <option value="SVK">Slowakei</option>
+                        <option value="SVN">Slowenien</option>
+                        <option value="ESP">Spanien</option>
+                        <option value="CZE">Tschechien</option>
+                        <option value="TUR">Türkei</option>
+                        <option value="UKR">Ukraine</option>
+                        <option value="HUN">Ungarn</option>
+                    </select>
+                </div>
+
+                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
+                    <label for="secretWinner" class="note_sans block text-xs font-bold text-gray-400">Geheimen Gewinner</label>
+                    <select name="secretWinner" id="secretWinner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                        <option disabled selected value="">Wähle einen geheimen Gewinner.</option>
+                        <option value="ALB">Albanien</option>
+                        <option value="BEL">Belgien</option>
+                        <option value="DEU">Deutschland</option>
+                        <option value="DNK">Dänemark</option>
+                        <option value="ENG">England</option>
+                        <option value="FRA">Frankreich</option>
+                        <option value="GEO">Georgien</option>
+                        <option value="ITA">Italien</option>
+                        <option value="HRV">Kroatien</option>
+                        <option value="NLD">Niederlande</option>
+                        <option value="AUT">Österreich</option>
+                        <option value="POL">Polen</option>
+                        <option value="PRT">Portugal</option>
+                        <option value="ROU">Rumänien</option>
+                        <option value="SCO">Schottland</option>
+                        <option value="CHE">Schweiz</option>
+                        <option value="SRB">Serbien</option>
+                        <option value="SVK">Slowakei</option>
+                        <option value="SVN">Slowenien</option>
+                        <option value="ESP">Spanien</option>
+                        <option value="CZE">Tschechien</option>
+                        <option value="TUR">Türkei</option>
+                        <option value="UKR">Ukraine</option>
+                        <option value="HUN">Ungarn</option>
+                    </select>
+                </div>
+
+
+
+
+                <Button name="Registrieren" />
+            </form>
+
+            <h2 class="text-center uppercase mx-auto mt-20">
+                Du hast schon ein Konto?
+            </h2>
+            <div class="mt-10">
+                <ButtonLink href="/login" name="Zurück zur Anmeldung" />
+            </div>
+        </div>
+    </div>
+
 </Layout>
+
 <script>
     const errorMessageElement = document.getElementById("form-error")!;
 
-    document.forms[0].addEventListener("submit", async (e) => {
+    document.querySelector('form')?.addEventListener("submit", async (e) => {
         e.preventDefault();
         errorMessageElement.innerText = "";
         const formElement = e.target as HTMLFormElement;
-        const response = await fetch(formElement.action, {
-            method: formElement.method,
-            body: new FormData(formElement)
-        });
-        if (response.ok) {
-            window.location.href = "/";
+        const response = await fetch(
+            formElement.action,
+            {
+                method: formElement.method,
+                body: new FormData(formElement)
+            } as RequestInit
+        );
+
+        if (response.redirected) {
+            window.location.assign(response.url);
         } else {
             errorMessageElement.innerText = (await response.json()).error;
         }

@@ -14,9 +14,7 @@ if (user) {
 ---
 
 <Layout title={metaTitle}>
-
   <div class="flex flex-col md:pt-12 pt-4 justify-center items-center mb-20">
-
     <h1 class="text-center mx-auto">
       ANMELDEN
     </h1>
@@ -26,8 +24,8 @@ if (user) {
         Willkommen beim valantic Tippspiel. Wenn du bereits ein Konto hast, kannst du dich hier anmelden. Andernfalls erstelle bitte dein persönliches Konto
       </div>
 
-      <form class="space-y-6" action="/api/auth/login" method="POST">
-        <Input name="email" label="E-Mail" type="email" placeholder="Dein Email"/>
+      <form class="space-y-6" action="/api/user" method="POST">
+        <Input name="email" label="E-Mail" type="email" placeholder="Deine E-mail-Adresse"/>
 
         <Input name="password" label="Passwort" type="password" placeholder="Passwort"/>
 
@@ -40,15 +38,13 @@ if (user) {
         </div>
       </form>
 
-
       <h2 class="text-center uppercase mx-auto mt-20">
         Noch kein Konto?
       </h2>
       <div class="mt-10">
-        <ButtonLink href="/register" name="Registrieren" />
+        <ButtonLink href="/signup" name="Registrieren" />
       </div>
     </div>
-
   </div>
 
 </Layout>
