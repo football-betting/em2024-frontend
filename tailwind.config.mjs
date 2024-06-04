@@ -10,6 +10,7 @@ export default {
 			fontSize: {
 				xs: ['0.6rem', '0.8rem'],
 				base: ['1rem', '1.3rem'],
+				"text-2xl": ['1.4rem', '1.7rem'],
 				heading: ['1.625rem', '1.95rem']
 			},
 			fontWeight: {

@@ -24,7 +24,7 @@ if (user) {
         Willkommen beim valantic Tippspiel. Wenn du bereits ein Konto hast, kannst du dich hier anmelden. Andernfalls erstelle bitte dein persönliches Konto
       </div>
 
-      <form class="space-y-6" action="/api/user" method="POST">
+      <form class="space-y-6" action="/api/auth/login" method="POST">
         <Input name="email" label="E-Mail" type="email" placeholder="Deine E-mail-Adresse"/>
 
         <Input name="password" label="Passwort" type="password" placeholder="Passwort"/>

@@ -12,8 +12,6 @@ export default defineConfig({
     mode: "standalone"
   }),
   vite: {
-    ssr: {
-      noExternal: ['path-to-regexp']
-    },
+    ssr: {}
   }
 });

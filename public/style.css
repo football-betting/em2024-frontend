@@ -1,8 +1,22 @@
+@font-face {
+    font-family: 'Seven Segment';
+    src: url('/fonts/Seven-Segment.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Chakra Petch Font - Regular */
 @font-face {
     font-family: 'Chakra Petch';
     src: url('/fonts/ChakraPetch-Regular.ttf') format('truetype');
     font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Chakra Petch';
+    src: url('/fonts/ChakraPetch-SemiBold.ttf') format('truetype');
+    font-weight: 600;
     font-style: normal;
 }
 
@@ -46,3 +60,146 @@
     font-family: 'Note Sans', sans-serif;
 }
 
+.seven-segmnet {
+    font-family: 'Seven Segment', sans-serif;
+}
+
+.match-grid {
+    display: grid;
+
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    gap: 0px;
+    height: 120px;
+}
+
+.match-team-1 {
+    grid-row-start: 1;
+    grid-column-start: 1;
+
+    grid-row-end: 2;
+    grid-column-end: 4;
+    align-content: center;
+    font-weight: 600;
+}
+
+.match-team-2 {
+
+    grid-row-start: 2;
+    grid-column-start: 1;
+
+    grid-row-end: 3;
+    grid-column-end: 4;
+    align-content: center;
+    font-weight: 600;
+}
+.match-score-team-1 {
+
+    grid-row-start: 1;
+    grid-column-start: 4;
+
+    grid-row-end: 2;
+    grid-column-end: 5;
+    align-content: center;
+    text-align: center;
+
+}
+.match-score-team-2 {
+
+    grid-row-start: 2;
+    grid-column-start: 4;
+
+    grid-row-end: 3;
+    grid-column-end: 5;
+    align-content: center;
+    text-align: center;
+
+}
+
+.match-tip {
+
+    grid-row-start: 1;
+    grid-column-start: 5;
+
+    grid-row-end: 3;
+    grid-column-end: 7;
+
+}
+
+.match-tip-grid {
+    display: grid;
+
+    grid-template-rows:  1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0px;
+    height: 100%;
+
+}
+
+.match-tip-grid-score1 {
+
+    grid-row-start: 1;
+    grid-column-start: 1;
+
+    grid-row-end: 2;
+    grid-column-end: 2;
+    align-content: center;
+
+}
+.match-tip-grid-score-last-box {
+
+    grid-row-start: 1;
+    grid-column-start: 2;
+
+    grid-row-end: 3;
+    grid-column-end: 3;
+    align-content: center;
+    border-left: 1px solid #99AAA9;
+    text-align: center;
+
+}
+.match-tip-grid-score2 {
+
+    grid-row-start: 2;
+    grid-column-start: 1;
+
+    grid-row-end: 3;
+    grid-column-end: 2;
+    align-content: center;
+}
+
+.info-grid {
+    display: grid;
+
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    gap: 0px;
+}
+
+.info-date {
+    grid-row-start: 1;
+    grid-column-start: 1;
+
+    grid-row-end: 2;
+    grid-column-end: 4;
+}
+
+.info-score {
+    grid-row-start: 1;
+    grid-column-start: 4;
+
+    grid-row-end: 2;
+    grid-column-end: 5;
+    text-align: center;
+
+}
+.info-tip {
+    grid-row-start: 1;
+    grid-column-start: 5;
+
+    grid-row-end: 2;
+    grid-column-end: 6;
+}
