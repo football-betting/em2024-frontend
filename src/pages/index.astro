@@ -2,6 +2,8 @@
 import LogginLayout from "../layouts/LogginLayout.astro";
 import {getFutureMatch} from "../lib/match";
 import Flag from '../components/Flag.astro';
+import Input from '../components/Input.astro';
+import Button from '../components/Button.astro';
 
 const user = Astro.locals.user;
 if (!user) {
@@ -26,16 +28,27 @@ const matches = await getFutureMatch();
             </div>
 
             <div class="match-grid bg-neutral-800">
-                <div class="match-team-1 pt-5">
+                <div class="match-team-1 pt-2">
                     <Flag iso="ENG" /> England
                 </div>
-                <div class="match-team-2 pb-5">
+                <div class="match-team-2 pb-2">
                     <Flag iso="NED" /> Niederlande
                 </div>
-                <div class="match-score-team-1 pt-5">3</div>
-                <div class="match-score-team-2 pb-5">4</div>
-                <div class="match-tip py-5">
-                    <div class="match-tip-grid">
+                <div class="match-score-team-1 pt-2">3</div>
+                <div class="match-score-team-2 pb-2">4</div>
+                <div class="match-tip">
+                    <form class="match-tip-grid">
+                        <div class="match-tip-grid-score1 pr-4 pt-2">
+                            <Input type="number" name="tip1" placeholder="Tipp 1" background="bg-neutral-900" value=""/>
+                        </div>
+                        <div class="match-tip-grid-score2 pr-4 pb-2">
+                            <Input type="number" name="tip2" placeholder="Tipp 2" background="bg-neutral-900" />
+                        </div>
+                        <div class="match-tip-grid-score-last-box p-8">
+                            <Button name="save" />
+                        </div>
+                    </form>
+                    <div class="match-tip-grid hidden">
                         <div class="match-tip-grid-score1">1</div>
                         <div class="match-tip-grid-score-last-box">
                             <div class="seven-segmnet text-2xl">15:00</div>
@@ -54,7 +67,7 @@ const matches = await getFutureMatch();
                 </div>
                 <div class="match-score-team-1 pt-5">3</div>
                 <div class="match-score-team-2 pb-5">4</div>
-                <div class="match-tip py-5">
+                <div class="match-tip py-5 cursor-pointer">
                     <form class="match-tip-grid">
                         <div class="match-tip-grid-score1">1</div>
                         <div class="match-tip-grid-score-last-box">

@@ -12,3 +12,8 @@ All commands are run from the root of the project, from a terminal:
 | `bun run preview`         | Preview your build locally, before deploying    |
 | `vitest tests/integration/ tests/unit/ --no-file-parallelism --coverage`       | Run unit and integration test with codecoverage |
 
+
+
+```
+npm rebuild better-sqlite3
+```

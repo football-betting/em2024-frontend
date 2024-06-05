@@ -1,14 +1,17 @@
 ---
 interface Props {
-    label: string;
+    label?: string;
     name: string;
-    placeholder: string
+    placeholder: string;
     type?: string;
+    value?: string;
+    background?: string;
 }
 
-const { label, name, placeholder, type = 'text' } = Astro.props;
+const { label, name, placeholder, type = 'text', value, background = 'bg-neutral-800' } = Astro.props;
 ---
-<div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
-    <label for={name} class="note_sans block text-xs font-bold text-gray-400">{label}</label>
-    <input required type={type} name={name} id={name} class="bg-neutral-800 block w-full border-0 p-0 placeholder:text-gray-300 focus:ring-0" placeholder={placeholder}>
+
+<div class={`rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 ${background}`}>
+    {label && <label for={name} class="note_sans block text-xs font-bold text-gray-400">{label}</label>}
+    <input required type={type} name={name} id={name} class={`${background} block w-full border-0 p-0 placeholder:text-gray-300 focus:ring-0`} placeholder={placeholder} {...(value ? { value } : {})} />
 </div>
