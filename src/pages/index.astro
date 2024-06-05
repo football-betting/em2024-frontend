@@ -12,6 +12,45 @@ if (!user) {
 
 const matches = await getFutureMatch();
 
+function filterValidGames(game) {
+    return game.homeTeam && game.homeTeam.name && game.awayTeam && game.awayTeam.name;
+}
+
+function formatDate(date) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+    return new Date(date).toLocaleDateString('de-DE', options);
+}
+
+function extractTime(date) {
+    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+}
+
+const validGames = matches.filter(filterValidGames);
+
+validGames.sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+
+const groupedGames = validGames.reduce((acc, game) => {
+    const date = formatDate(game.utcDate);
+    const time = extractTime(game.utcDate);
+
+    if (!acc[date]) {
+        acc[date] = [];
+    }
+
+    acc[date].push({
+        id: game.id,
+        homeTeam: game.homeTeam.name,
+        homeTla: game.homeTeam.tla,
+        awayTeam: game.awayTeam.name,
+        awayTla: game.awayTeam.tla,
+        time: time
+    });
+
+    return acc;
+}, {});
+
+console.log(groupedGames);
+
 ---
 <LogginLayout title="Dashboard">
 
@@ -20,7 +59,53 @@ const matches = await getFutureMatch();
 
         <div>
             <h1>Spielplan</h1>
+            <div>
+                {Object.entries(groupedGames).map(([date, games]) => (
+                        <>
+                            <div class="info-grid mt-8 pl-4 text-zinc-400">
+                                <div class="info-date ">{date}</div>
+                                <div class="info-score"></div>
+                                <div class="info-tip">Dein Tipp</div>
+                            </div>
 
+
+                                {games.map(game => (
+
+                                        <div class="match-grid bg-neutral-800 mt-4">
+                                            <div class="match-team-1 pt-2">
+                                                <Flag iso={game.homeTla} /> {game.homeTeam}
+                                            </div>
+                                            <div class="match-team-2 pb-2">
+                                                <Flag iso={game.awayTla} /> {game.awayTeam}
+                                            </div>
+                                            <div class="match-score-team-1 pt-2">-</div>
+                                            <div class="match-score-team-2 pb-2">-</div>
+                                            <div class="match-tip">
+                                                <form class="match-tip-grid" action=`/api/tipp/${game.id}`>
+                                                    <div class="match-tip-grid-score1 pr-4 pt-2">
+                                                        <Input type="number" name="tip1" placeholder="Tipp 1" background="bg-neutral-900" value=""/>
+                                                    </div>
+                                                    <div class="match-tip-grid-score2 pr-4 pb-2">
+                                                        <Input type="number" name="tip2" placeholder="Tipp 2" background="bg-neutral-900" />
+                                                    </div>
+                                                    <div class="match-tip-grid-score-last-box p-8">
+                                                        <Button name="save" />
+                                                    </div>
+                                                </form>
+                                                <!--<div class="match-tip-grid hidden">-->
+                                                <!--    <div class="match-tip-grid-score1">1</div>-->
+                                                <!--    <div class="match-tip-grid-score-last-box">-->
+                                                <!--        <div class="seven-segmnet text-2xl">15:00</div>-->
+                                                <!--    </div>-->
+                                                <!--    <div class="match-tip-grid-score2">3</div>-->
+                                                <!--</div>-->
+                                            </div>
+                                        </div>
+                                ))}
+
+                        </>
+                ))}
+            </div>
             <div class="info-grid">
                 <div class="info-date">Freitag</div>
                 <div class="info-score">Live</div>
