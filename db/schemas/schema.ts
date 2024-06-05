@@ -27,3 +27,12 @@ export const session = sqliteTable('session', {
     userId: integer('user_id').references(() => user.id),
     expiresAt: integer('expires_at').notNull(),
 })
+
+export const tip = sqliteTable('tip', {
+    id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+    userId: integer('user_id').references(() => user.id),
+    matchId: integer('match_id').references(() => match.id),
+    date: integer('date', { mode: 'timestamp' }).notNull(),
+    scoreHome: integer('score_home', { mode: 'number' }).notNull(),
+    scoreAway: integer('score_away', { mode: 'number' }).notNull(),
+})
