@@ -18,12 +18,12 @@ function filterValidGames(game) {
 }
 
 function formatDate(date) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     return new Date(date).toLocaleDateString('de-DE', options);
 }
 
 function extractTime(date) {
-    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 }
 
 const validGames = matches.filter(filterValidGames);

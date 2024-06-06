@@ -4,18 +4,8 @@ export interface Props {
 }
 
 const { iso } = Astro.props as Props;
-
-let innerHTML = '';
-try {
-    const module = await import(`../svg/${iso}.svg?raw`);
-    innerHTML = module.default;
-} catch (error) {
-    console.error(`Not found svg for ${iso}`);
-}
 ---
 
-<div class="inline-block w-8 align-sub ml-4 mr-2">
-    {innerHTML && (
-            <Fragment class="inline-block w-6 h-6" set:html={innerHTML} />
-    )}
+<div class="inline-block w-8 align-bottom ml-4 mr-2">
+    <img class="inline-block w-6 h-6" src={`/svg/${iso}.svg`}/>
 </div>
