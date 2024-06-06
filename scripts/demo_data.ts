@@ -6,13 +6,13 @@ import {Argon2id} from "oslo/password";
 
 
 const users = [
-    { email: 'john@doe.com', firstName: 'John', lastName: 'Doe', department: 'Langenfeld', winner: 'DE', secretWinner: 'EN' },
-    { email: 'toni@kroos.de', firstName: 'Toni', lastName: 'Kroos', department: 'Langenfeld', winner: 'DE', secretWinner: 'FR' },
-    { email: 'philipp@lahm.de', firstName: 'Philipp', lastName: 'Lahm', department: 'Langenfeld', winner: 'ES', secretWinner: 'EN' },
-    { email: 'lukas@podolski.pl', firstName: 'Lukas', lastName: 'Podolski', department: 'Langenfeld', winner: 'PL', secretWinner: 'DE' },
-    { email: 'robbie@fowler.com', firstName: 'Robbie', lastName: 'Fowler', department: 'London', winner: 'NL', secretWinner: 'EN' },
-    { email: 'bobby@moore.com', firstName: 'Bobby', lastName: 'Moore', department: 'London', winner: 'EN', secretWinner: 'DE' },
-    { email: 'steve@mcmanaman.com', firstName: 'Steve', lastName: 'McManaman', department: 'London', winner: 'FR', secretWinner: 'EN' }
+    { email: 'john@doe.com', firstName: 'John', lastName: 'Doe', username: 'JohnDoe',department: 'Langenfeld', winner: 'DEU', secretWinner: 'ENG' },
+    { email: 'toni@kroos.de', firstName: 'Toni', lastName: 'Kroos', username: 'ToniKroos',department: 'Langenfeld', winner: 'DEU', secretWinner: 'FRA' },
+    { email: 'philipp@lahm.de', firstName: 'Philipp', lastName: 'Lahm', username: 'PhilippLahm',department: 'Langenfeld', winner: 'ESP', secretWinner: 'ENG' },
+    { email: 'lukas@podolski.pl', firstName: 'Lukas', lastName: 'Podolski', username: 'LukasPodolski',department: 'Langenfeld', winner: 'POL', secretWinner: 'DEU' },
+    { email: 'robbie@fowler.com', firstName: 'Robbie', lastName: 'Fowler', username: 'RobbieFowler',department: 'London', winner: 'NLD', secretWinner: 'ENG' },
+    { email: 'bobby@moore.com', firstName: 'Bobby', lastName: 'Moore', username: 'BobbyMoore',department: 'London', winner: 'ENG', secretWinner: 'DEU' },
+    { email: 'steve@mcmanaman.com', firstName: 'Steve', lastName: 'McManaman', username: 'SteveMcManaman',department: 'London', winner: 'FRA', secretWinner: 'ENG' }
 ];
 
 console.log('Import users...');
@@ -23,6 +23,7 @@ for (const user of users) {
             password: await new Argon2id().hash('test123'),
             firstName: user.firstName,
             lastName: user.lastName,
+            username: user.username,
             department: user.department,
             winner: user.winner,
             secretWinner: user.secretWinner
@@ -69,8 +70,8 @@ const now = new Date();
 const games = [
     {
         id: 1,
-        homeTeam: JSON.stringify(land.de),
-        awayTeam: JSON.stringify(land.es),
+        homeTeam: land.de,
+        awayTeam: land.es,
         status: "scheduled",
         utcDate: new Date(now.getTime() - 86400000),
         score: null,
@@ -79,18 +80,18 @@ const games = [
     },
     {
         id: 2,
-        homeTeam: JSON.stringify(land.pl),
-        awayTeam: JSON.stringify(land.fr),
+        homeTeam: land.pl,
+        awayTeam: land.fr,
         status: "scheduled",
         utcDate: new Date(now.getTime() - 1800000),
-        score: JSON.stringify({ current: '0:0' }),
+        score: { current: '0:0' },
         homeScore: 0,
         awayScore: 0
     },
     {
         id: 3,
-        homeTeam: JSON.stringify(land.en),
-        awayTeam: JSON.stringify(land.nl),
+        homeTeam: land.en,
+        awayTeam: land.nl,
         status: "scheduled",
         utcDate: new Date(now.getTime() + 3600000),
         score: null,
@@ -99,8 +100,8 @@ const games = [
     },
     {
         id: 4,
-        homeTeam: JSON.stringify(land.fr),
-        awayTeam: JSON.stringify(land.en),
+        homeTeam: land.fr,
+        awayTeam: land.en,
         status: "scheduled",
         utcDate: new Date(now.getTime() + 86400000),
         score: null,

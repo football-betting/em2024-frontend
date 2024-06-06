@@ -1,0 +1,36 @@
+name: em2024 CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '21'
+          cache: 'pnpm'
+
+      - name: Set Timezone
+        run: sudo timedatectl set-timezone Europe/Berlin
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies with pnpm
+        run: pnpm install
+
+      - name: init demo data
+        run: pnpm run init-demo-data
+
+      - name: Run tests with Vitest
+        run: pnpm exec vitest

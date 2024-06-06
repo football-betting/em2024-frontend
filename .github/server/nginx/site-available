@@ -1,0 +1,51 @@
+server {
+    server_name em2024.vcec.cloud;
+
+    gzip on;
+    gzip_min_length 1000;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://[::1]:4322;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade; # WebSocket support
+        proxy_set_header Connection "upgrade"; # WebSocket support
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /public/svg/ {
+        alias /var/www/football-betting/em2024-frontend/public/svg/;
+        expires 24h;
+        add_header Cache-Control "public";
+    }
+
+    # Cache for the favicon.svg
+    location = /favicon.svg {
+        alias /var/www/football-betting/em2024-frontend/public/favicon.svg;
+        expires 24h;
+        add_header Cache-Control "public";
+    }
+
+    access_log /var/log/nginx/em2024.access.log;
+    error_log /var/log/nginx/em2024.error.log;
+
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/em2024.vcec.cloud/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/em2024.vcec.cloud/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
+
+server {
+    if ($host = em2024.vcec.cloud) {
+        return 301 https://$host$request_uri;
+    }
+
+    listen 80;
+    server_name em2024.vcec.cloud;
+    return 404;
+}
