@@ -38,8 +38,6 @@ const tipsMap = tips.reduce((acc, match) => {
     return acc;
 }, {});
 
-console.log(tipsMap);
-
 const groupedGames = validGames.reduce((acc, game) => {
     const date = formatDate(game.utcDate);
     const time = extractTime(game.utcDate);
@@ -65,8 +63,6 @@ const groupedGames = validGames.reduce((acc, game) => {
 
         match.tipHome = tipsMap[game.id].scoreHome;
         match.tipAway = tipsMap[game.id].scoreAway;
-
-        console.log(match)
     }
 
     acc[date].push(match);
@@ -74,36 +70,32 @@ const groupedGames = validGames.reduce((acc, game) => {
     return acc;
 }, {});
 
-
 ---
 <LogginLayout title="Dashboard">
 
-    <div class="grid grid-cols-2 gap-4 pt-5">
-        <div>01</div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-5 px-5">
+        <div></div>
 
         <div>
             <h1>Spielplan</h1>
             <div>
                 {Object.entries(groupedGames).map(([date, games]) => (
                         <>
-                            <div class="info-grid mt-8 pl-4 text-zinc-400">
+                            <div class="info-grid mt-8 pl-4 text-zinc-400 mb-4">
                                 <div class="info-date ">{date}</div>
-                                <div class="info-score"></div>
                                 <div class="info-tip">Dein Tipp</div>
                             </div>
 
 
                                 {games.map(game => (
-
-                                        <div class="match-grid bg-neutral-800 mt-4">
+                                        <div class="error pl-4 pb-2 text-red-500 form-error hidden">Error</div>
+                                        <div class="match-grid bg-neutral-800 mb-4">
                                             <div class="match-team-1 pt-2">
                                                 <Flag iso={game.homeTla} /> {game.homeTeam}
                                             </div>
                                             <div class="match-team-2 pb-2">
                                                 <Flag iso={game.awayTla} /> {game.awayTeam}
                                             </div>
-                                            <div class="match-score-team-1 pt-2">-</div>
-                                            <div class="match-score-team-2 pb-2">-</div>
                                             <div class="match-tip">
                                                 <form class={`match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" action={`/api/tip/${game.id}`}>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
@@ -112,8 +104,10 @@ const groupedGames = validGames.reduce((acc, game) => {
                                                     <div class="match-tip-grid-score2 pr-4 pb-2">
                                                         <Input type="number" name="tip2" value={game.tipAway} background="bg-neutral-900" />
                                                     </div>
-                                                    <div class="match-tip-grid-score-last-box p-8">
-                                                        <Button className="tipSend" name="save" />
+                                                    <div class="match-tip-grid-score-last-box">
+                                                        <div class="ml-6 mr-6 xl:mr-0">
+                                                            <Button className="tipSend" name="save" />
+                                                        </div>
                                                     </div>
                                                 </form>
                                                 <div class={`match-tip-grid info-tip-score cursor-pointer ${game.tipHome !== null && game.tipAway !== null ? '' : 'hidden'}`}>
