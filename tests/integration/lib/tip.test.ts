@@ -1,12 +1,12 @@
 import {afterEach,  expect, test} from 'vitest'
 import {deleteTip, getTipByUserAndMatch, saveTip} from '../../../src/lib/tip'
 import db from "../../../src/core/db.ts";
-import {and, eq} from "drizzle-orm";
+import {eq} from "drizzle-orm";
 import {tip} from "../../../db/schemas/schema.ts";
+
 afterEach(async () => {
     await deleteTip(1,1);
 })
-
 
 test("test tip", async () => {
     let result = await getTipByUserAndMatch(1,1);
