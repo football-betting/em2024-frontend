@@ -88,7 +88,7 @@ const groupedGames = validGames.reduce((acc, game) => {
 
 
                                 {games.map(game => (
-                                        <div class="error pl-4 pb-2 text-red-500 form-error hidden">Error</div>
+                                        <div class="error pl-4 pb-2 text-red-500 hidden" id=`form-error-${game.id}`></div>
                                         <div class="match-grid bg-neutral-800 mb-4">
                                             <div class="match-team-1 pt-2">
                                                 <Flag iso={game.homeTla} /> {game.homeTeam}
@@ -97,7 +97,7 @@ const groupedGames = validGames.reduce((acc, game) => {
                                                 <Flag iso={game.awayTla} /> {game.awayTeam}
                                             </div>
                                             <div class="match-tip">
-                                                <form class={`match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" action={`/api/tip/${game.id}`}>
+                                                <form class={`match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" data-form-id={game.id} action={`/api/tip/${game.id}`}>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
                                                         <Input type="number" name="tip1" value={game.tipHome} background="bg-neutral-900" />
                                                     </div>
@@ -134,6 +134,18 @@ const groupedGames = validGames.reduce((acc, game) => {
 
 <script>
 
+    function removeClass(element, className) {
+        if (element.classList.contains(className)){
+            element.classList.remove(className);
+        }
+    }
+
+    function addClass(element, className) {
+        if (!element.classList.contains(className)){
+            element.classList.add(className);
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('.info-tip-score').forEach(infoDiv => {
@@ -157,6 +169,10 @@ const groupedGames = validGames.reduce((acc, game) => {
                 const formElement = e.target as HTMLFormElement;
                 const parentDiv = formElement.closest('.match-tip');
 
+                const gameID = formElement.getAttribute('data-form-id');
+                const errorDiv = document.getElementById(`form-error-${gameID}`);
+                addClass(errorDiv, 'hidden');
+
                 formElement.classList.add('hidden');
                 const loadingDiv = parentDiv.querySelector('.loading-spinner');
                 loadingDiv.classList.remove('hidden');
@@ -172,25 +188,32 @@ const groupedGames = validGames.reduce((acc, game) => {
                 loadingDiv.classList.add('hidden');
                 formElement.classList.remove('hidden');
 
-                if(response.status === 200) {
-                    const json = await response.json();
-                    if(json.success) {
+                const json = await response.json();
+                if(response.status === 200 && json.success) {
 
-                        formElement.classList.add('hidden');
+                    formElement.classList.add('hidden');
 
 
-                        const score1Div = parentDiv.querySelector('.score1');
-                        const score2Div = parentDiv.querySelector('.score2');
+                    const score1Div = parentDiv.querySelector('.score1');
+                    const score2Div = parentDiv.querySelector('.score2');
 
-                        score1Div.textContent = json.tip.scoreHome;
-                        score2Div.textContent = json.tip.scoreAway;
+                    score1Div.textContent = json.tip.scoreHome;
+                    score2Div.textContent = json.tip.scoreAway;
 
-                        const hiddenDiv = parentDiv.querySelector('.info-tip-score.hidden');
-                        if (hiddenDiv) {
-                            hiddenDiv.classList.remove('hidden');
-                        }
+                    const hiddenDiv = parentDiv.querySelector('.info-tip-score.hidden');
+                    if (hiddenDiv) {
+                        hiddenDiv.classList.remove('hidden');
                     }
+                    return;
+
                 }
+
+                removeClass(errorDiv, 'hidden');
+                let errorMessage = 'Fehler beim Speichern des Tipps';
+                if(json.error) {
+                    errorMessage = json.error;
+                }
+                errorDiv.textContent = errorMessage;
             });
         });
     });
