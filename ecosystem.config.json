@@ -12,7 +12,7 @@
       "restart_delay": 4000,
       "log_date_format": "YYYY-MM-DD HH:mm:ss",
       "out_file": "/var/log/em2024-frontend.log",
-      "error_file": "/var/log/em2024-frontend.log",
+      "error_file": "/var/log/em2024-frontend-error.log",
       "combine_logs": true,
       "max_memory_restart": "200M"
     }
