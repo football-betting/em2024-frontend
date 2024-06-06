@@ -2,9 +2,6 @@ import db from "../src/core/db";
 import * as schema from "../db/schemas/schema";
 import {Argon2id} from "oslo/password";
 
-
-
-
 const users = [
     { email: 'john@doe.com', firstName: 'John', lastName: 'Doe', username: 'JohnDoe',department: 'Langenfeld', winner: 'DEU', secretWinner: 'ENG' },
     { email: 'toni@kroos.de', firstName: 'Toni', lastName: 'Kroos', username: 'ToniKroos',department: 'Langenfeld', winner: 'DEU', secretWinner: 'FRA' },
@@ -36,35 +33,32 @@ for (const user of users) {
 console.log('Finished importing users.');
 console.log('----');
 
-
-
 const land = {
     en: {
-        crest: "https://crests.football-data.org/770.svg",
+        name: "England",
         tla: "ENG"
     },
     nl: {
-        crest: "https://crests.football-data.org/8601.svg",
+        name: "Netherlands",
         tla: "NED"
     },
     pl: {
-        crest: "https://crests.football-data.org/794.svg",
+        name: "Poland",
         tla: "POL"
     },
     fr: {
-        crest: "https://crests.football-data.org/773.svg",
+        name: "France",
         tla: "FRA"
     },
     de: {
-        crest: "https://crests.football-data.org/759.svg",
+        name: "Germany",
         tla: "GER"
     },
     es: {
-        crest: "https://crests.football-data.org/760.svg",
+        name: "Spain",
         tla: "ESP"
     },
 };
-
 
 const now = new Date();
 const games = [
@@ -128,6 +122,3 @@ for (const game of games) {
         console.error(`Error inserting user ${game.id}:`, error);
     }
 }
-
-
-
