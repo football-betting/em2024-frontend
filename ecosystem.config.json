@@ -2,6 +2,7 @@
   "apps": [
     {
       "name": "em2024-frontend",
+      "port": "4322",
       "script": "bun run preview --port=4322",
       "watch": true,
       "watch_options": {
