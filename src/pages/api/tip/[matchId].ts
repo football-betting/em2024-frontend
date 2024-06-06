@@ -1,15 +1,22 @@
 import type {APIContext, APIRoute} from "astro";
 import {getMatchById} from "../../../lib/match.ts";
+import {saveTip, getTipByUserAndMatch} from "../../../lib/tip.ts";
 
-export const GET: APIRoute = async (context: APIContext) => {
 
-    console.log(context, context.locals.session.userId);
+export const POST: APIRoute = async (context: APIContext) => {
+
     if(!context.locals.session || !context.locals.session.userId) {
         return new Response('user is not logged in', {
             status: 401
         });
     }
-    const userId = context.locals.session.userId;
+    const userId = parseInt(context.locals.session.userId);
+
+    if(isNaN(userId) || !userId) {
+        return new Response('userId not found', {
+            status: 401
+        });
+    }
 
     const matchId = parseInt(context.params.matchId);
     if(isNaN(matchId) || !matchId) {
@@ -45,8 +52,10 @@ export const GET: APIRoute = async (context: APIContext) => {
         );
     }
 
-    let tip1Value = context.url.searchParams.get("tip1")?.toString();
-    let tip2Value = context.url.searchParams.get("tip2")?.toString();
+    const formData = await context.request.formData();
+
+    let tip1Value = formData.get("tip1")?.toString();
+    let tip2Value = formData.get("tip2")?.toString();
 
     const tip1 = parseInt(tip1Value, 10);
     const tip2 = parseInt(tip2Value, 10);
@@ -62,19 +71,27 @@ export const GET: APIRoute = async (context: APIContext) => {
         errors.push("Die Eingabe für 'tip2' ist außerhalb des erlaubten Bereichs (0-20).");
     }
 
-    if(!tip1 || !tip2) {
-        return new Response('Tip not found', {
-            status: 401
-        });
+    if(errors.length > 0) {
+        return new Response(
+            JSON.stringify({
+                error: "Error " + errors.join(", ")
+            }),
+            {
+                status: 500,
+            });
     }
 
-    console.log(tip1, tip2, matchId, userId )
-
     try {
-        password = await new Argon2id().hash(password);
-        await createUser({ email, password, firstName, lastName, department, winner, secretWinner})
+        await saveTip(userId, matchId, tip1, tip2);
 
-        return new Response();
+        const userTip = await getTipByUserAndMatch(userId, matchId);
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                tip: userTip
+            }),
+        );
     } catch (error) {
         return new Response(
             JSON.stringify({

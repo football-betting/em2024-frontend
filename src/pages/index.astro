@@ -81,7 +81,7 @@ const groupedGames = validGames.reduce((acc, game) => {
                                             <div class="match-score-team-1 pt-2">-</div>
                                             <div class="match-score-team-2 pb-2">-</div>
                                             <div class="match-tip">
-                                                <form class="match-tip-grid" action=`/api/tip   /${game.id}`>
+                                                <form class="match-tip-grid form-tip-score" method="POST" action=`/api/tip/${game.id}`>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
                                                         <Input type="number" name="tip1" placeholder="Tipp 1" background="bg-neutral-900" value=""/>
                                                     </div>
@@ -89,16 +89,16 @@ const groupedGames = validGames.reduce((acc, game) => {
                                                         <Input type="number" name="tip2" placeholder="Tipp 2" background="bg-neutral-900" />
                                                     </div>
                                                     <div class="match-tip-grid-score-last-box p-8">
-                                                        <Button name="save" />
+                                                        <Button className="tipSend" name="save" />
                                                     </div>
                                                 </form>
-                                                <!--<div class="match-tip-grid hidden">-->
-                                                <!--    <div class="match-tip-grid-score1">1</div>-->
-                                                <!--    <div class="match-tip-grid-score-last-box">-->
-                                                <!--        <div class="seven-segmnet text-2xl">15:00</div>-->
-                                                <!--    </div>-->
-                                                <!--    <div class="match-tip-grid-score2">3</div>-->
-                                                <!--</div>-->
+                                                <div class="match-tip-grid hidden info-tip-score cursor-pointer">
+                                                    <div class="match-tip-grid-score1 score1"></div>
+                                                    <div class="match-tip-grid-score-last-box">
+                                                        <div class="seven-segmnet text-2xl">{game.time}</div>
+                                                    </div>
+                                                    <div class="match-tip-grid-score2 score2"></div>
+                                                </div>
                                             </div>
                                         </div>
                                 ))}
@@ -106,91 +106,64 @@ const groupedGames = validGames.reduce((acc, game) => {
                         </>
                 ))}
             </div>
-            <div class="info-grid">
-                <div class="info-date">Freitag</div>
-                <div class="info-score">Live</div>
-                <div class="info-tip">Dein Tipp</div>
-            </div>
-
-            <div class="match-grid bg-neutral-800">
-                <div class="match-team-1 pt-2">
-                    <Flag iso="ENG" /> England
-                </div>
-                <div class="match-team-2 pb-2">
-                    <Flag iso="NED" /> Niederlande
-                </div>
-                <div class="match-score-team-1 pt-2">3</div>
-                <div class="match-score-team-2 pb-2">4</div>
-                <div class="match-tip">
-                    <form class="match-tip-grid tip-send">
-                        <div class="match-tip-grid-score1 pr-4 pt-2">
-                            <Input type="number" name="tip1" placeholder="Tipp 1" background="bg-neutral-900" value=""/>
-                        </div>
-                        <div class="match-tip-grid-score2 pr-4 pb-2">
-                            <Input type="number" name="tip2" placeholder="Tipp 2" background="bg-neutral-900" />
-                        </div>
-                        <div class="match-tip-grid-score-last-box p-8">
-                            <Button name="save" />
-                        </div>
-                    </form>
-                    <div class="match-tip-grid hidden">
-                        <div class="match-tip-grid-score1">1</div>
-                        <div class="match-tip-grid-score-last-box">
-                            <div class="seven-segmnet text-2xl">15:00</div>
-                        </div>
-                        <div class="match-tip-grid-score2">3</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="match-grid bg-neutral-800 mt-4">
-                <div class="match-team-1 pt-5">
-                    <Flag iso="ENG" /> England
-                </div>
-                <div class="match-team-2 pb-5">
-                    <Flag iso="NED" /> Niederlande
-                </div>
-                <div class="match-score-team-1 pt-5">3</div>
-                <div class="match-score-team-2 pb-5">4</div>
-                <div class="match-tip py-5 cursor-pointer">
-                    <form class="match-tip-grid">
-                        <div class="match-tip-grid-score1">1</div>
-                        <div class="match-tip-grid-score-last-box">
-                            <div class="seven-segmnet text-2xl">15:00</div>
-                        </div>
-                        <div class="match-tip-grid-score2">3</div>
-                    </form>
-                </div>
-            </div>
-
-
-
         </div>
     </div>
 
 </LogginLayout>
 
 <script>
-    document.querySelectorAll('form.tip-send').forEach(form => {
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const errorMessageElement = document.querySelector('#error-message'); // Stellen Sie sicher, dass ein Element mit dieser ID existiert, um Fehlermeldungen anzuzeigen.
-            errorMessageElement.innerText = "";
 
-            const formElement = e.target as HTMLFormElement;
-            const response = await fetch(
-                formElement.action,
-                {
-                    method: formElement.method,
-                    body: new FormData(formElement)
-                } as RequestInit
-            );
+    document.addEventListener("DOMContentLoaded", function () {
 
-            if (response.redirected) {
-                //window.location.assign(response.url);
-            } else {
-                errorMessageElement.innerText = (await response.json()).error;
-            }
+        document.querySelectorAll('.info-tip-score').forEach(infoDiv => {
+            infoDiv.addEventListener('click', function() {
+                const parentDiv = this.closest('.match-tip');
+
+                this.classList.add('hidden');
+
+                const formDiv = parentDiv.querySelector('.form-tip-score');
+                if (formDiv.classList.contains('hidden')) {
+                    formDiv.classList.remove('hidden');
+                }
+            });
+        });
+
+        document.querySelectorAll('.match-tip-grid').forEach(form => {
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formElement = e.target as HTMLFormElement;
+                const parentDiv = formElement.closest('.match-tip');
+
+
+                const response = await fetch(
+                    formElement.action,
+                    {
+                        method: formElement.method,
+                        body: new FormData(formElement)
+                    } as RequestInit
+                );
+
+                if(response.status === 200) {
+                    const json = await response.json();
+                    if(json.success) {
+
+                        formElement.classList.add('hidden');
+
+                        const score1Div = parentDiv.querySelector('.score1');
+                        const score2Div = parentDiv.querySelector('.score2');
+
+                        score1Div.textContent = json.tip.scoreHome;
+                        score2Div.textContent = json.tip.scoreAway;
+
+                        const hiddenDiv = parentDiv.querySelector('.info-tip-score.hidden');
+                        if (hiddenDiv) {
+                            hiddenDiv.classList.remove('hidden');
+                        }
+                    }
+                }
+            });
         });
     });
 </script>

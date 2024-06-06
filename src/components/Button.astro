@@ -1,14 +1,18 @@
 ---
 interface Props {
     name: string;
+    className?: string;
 }
 
-const { name} = Astro.props;
+const { name, className = ''} = Astro.props;
 ---
 <button type="submit"
-        class="flex w-full justify-center rounded-md bg-red-500 px-3 py-4 font-semibold text-white shadow-sm shadow-red-500
+        class={`flex w-full justify-center rounded-md bg-red-500 px-3 py-4 font-semibold text-white shadow-sm shadow-red-500
         hover:bg-red-700
         focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600
-        ">
+        ${className}`}>
     {name}
 </button>
+
+
+
