@@ -1,6 +1,7 @@
 ---
 import LogginLayout from "../layouts/LogginLayout.astro";
 import {getFutureMatch} from "../lib/match";
+import {getTipByUserAndMatchIds} from "../lib/tip";
 import Flag from '../components/Flag.astro';
 import Input from '../components/Input.astro';
 import Button from '../components/Button.astro';
@@ -29,6 +30,16 @@ const validGames = matches.filter(filterValidGames);
 
 validGames.sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
 
+const gamesIds = validGames.map(game => game.id);
+
+const tips = await getTipByUserAndMatchIds(user.id, gamesIds);
+const tipsMap = tips.reduce((acc, match) => {
+    acc[match.matchId] = match;
+    return acc;
+}, {});
+
+console.log(tipsMap);
+
 const groupedGames = validGames.reduce((acc, game) => {
     const date = formatDate(game.utcDate);
     const time = extractTime(game.utcDate);
@@ -37,18 +48,31 @@ const groupedGames = validGames.reduce((acc, game) => {
         acc[date] = [];
     }
 
-    acc[date].push({
+    gamesIds.push(game.id);
+
+    let match = {
         id: game.id,
         homeTeam: game.homeTeam.name,
         homeTla: game.homeTeam.tla,
         awayTeam: game.awayTeam.name,
         awayTla: game.awayTeam.tla,
-        time: time
-    });
+        time: time,
+        tipHome: null,
+        tipAway: null
+    };
+
+    if (tipsMap[game.id]) {
+
+        match.tipHome = tipsMap[game.id].scoreHome;
+        match.tipAway = tipsMap[game.id].scoreAway;
+
+        console.log(match)
+    }
+
+    acc[date].push(match);
 
     return acc;
 }, {});
-
 
 
 ---
@@ -83,10 +107,10 @@ const groupedGames = validGames.reduce((acc, game) => {
                                             <div class="match-tip">
                                                 <form class="match-tip-grid form-tip-score" method="POST" action=`/api/tip/${game.id}`>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
-                                                        <Input type="number" name="tip1" placeholder="Tipp 1" background="bg-neutral-900" value=""/>
+                                                        <Input type="number" name="tip1" value={game.tipHome} background="bg-neutral-900" />
                                                     </div>
                                                     <div class="match-tip-grid-score2 pr-4 pb-2">
-                                                        <Input type="number" name="tip2" placeholder="Tipp 2" background="bg-neutral-900" />
+                                                        <Input type="number" name="tip2" value={game.tipAway} background="bg-neutral-900" />
                                                     </div>
                                                     <div class="match-tip-grid-score-last-box p-8">
                                                         <Button className="tipSend" name="save" />
@@ -98,6 +122,9 @@ const groupedGames = validGames.reduce((acc, game) => {
                                                         <div class="seven-segmnet text-2xl">{game.time}</div>
                                                     </div>
                                                     <div class="match-tip-grid-score2 score2"></div>
+                                                </div>
+                                                <div class="match-tip-grid mt-10 ml-8 hidden loading-spinner" >
+                                                    <div class="loading"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,6 +163,9 @@ const groupedGames = validGames.reduce((acc, game) => {
                 const formElement = e.target as HTMLFormElement;
                 const parentDiv = formElement.closest('.match-tip');
 
+                formElement.classList.add('hidden');
+                const loadingDiv = parentDiv.querySelector('.loading-spinner');
+                loadingDiv.classList.remove('hidden');
 
                 const response = await fetch(
                     formElement.action,
@@ -145,11 +175,15 @@ const groupedGames = validGames.reduce((acc, game) => {
                     } as RequestInit
                 );
 
+                loadingDiv.classList.add('hidden');
+                formElement.classList.remove('hidden');
+
                 if(response.status === 200) {
                     const json = await response.json();
                     if(json.success) {
 
                         formElement.classList.add('hidden');
+
 
                         const score1Div = parentDiv.querySelector('.score1');
                         const score2Div = parentDiv.querySelector('.score2');

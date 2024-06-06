@@ -1,11 +1,12 @@
 import {afterEach,  expect, test} from 'vitest'
-import {deleteTip, getTipByUserAndMatch, saveTip} from '../../../src/lib/tip'
+import {getTipByUserAndMatch, saveTip, getTipByUserAndMatchIds} from '../../../src/lib/tip'
 import db from "../../../src/core/db.ts";
-import {eq} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 import {tip} from "../../../db/schemas/schema.ts";
 
 afterEach(async () => {
-    await deleteTip(1,1);
+    await db.delete(tip).where(and(eq(tip.userId, 1)));
+    await db.delete(tip).where(and(eq(tip.userId, 2)));
 })
 
 test("test tip", async () => {
@@ -48,4 +49,32 @@ test("test update tipdate", async () => {
     result = await getTipByUserAndMatch(1,1);
 
     expect(result.date.getTime()).toBeGreaterThan(dateOneSecondAgo.getTime());
+})
+
+test("test getTipByUserAndMatchIds", async () => {
+    await saveTip(1,1,3,3);
+    await saveTip(1,2,1,2);
+    await saveTip(1,3,4,1);
+    await saveTip(2,3,2,3);
+
+    let result = await getTipByUserAndMatchIds(1, [1,3]);
+
+    expect(result.length).toBe(2);
+    expect(result[0].userId).toBe(1);
+    expect(result[0].matchId).toBe(1);
+    expect(result[0].scoreHome).toBe(3);
+    expect(result[0].scoreAway).toBe(3);
+
+    expect(result[1].userId).toBe(1);
+    expect(result[1].matchId).toBe(3);
+    expect(result[1].scoreHome).toBe(4);
+    expect(result[1].scoreAway).toBe(1);
+})
+
+test("test getTipByUserAndMatchIds when not found", async () => {
+    let result = await getTipByUserAndMatchIds(1, [1,3]);
+    expect(result.length).toBe(0);
+
+    result = await getTipByUserAndMatchIds(1, []);
+    expect(result.length).toBe(0);
 })

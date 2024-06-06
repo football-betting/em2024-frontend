@@ -1,0 +1,19 @@
+---
+export interface Props {
+    name: string;
+}
+
+const { name } = Astro.props as Props;
+
+let innerHTML = '';
+try {
+    const module = await import(`../icon/${name}.svg?raw`);
+    innerHTML = module.default;
+} catch (error) {
+    console.error(`Not found svg for ${iso}`);
+}
+---
+{innerHTML && (
+        <Fragment class="inline-block w-6 h-6" set:html={innerHTML} />
+)}
+
