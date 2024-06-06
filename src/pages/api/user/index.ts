@@ -26,6 +26,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     if (!winner) missingFields.push("winner");
     if (!secretWinner) missingFields.push("secretWinner");
 
+    if (missingFields.length > 0) {
+        return new Response(
+            JSON.stringify({
+                error: `Missing required fields: ${missingFields.join(', ')}s`
+            }), {
+                status: 400,
+            });
+    }
+
     const checkUser = await getUserByEmail(email);
 
     if (checkUser) {
@@ -33,13 +42,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
             JSON.stringify({
                 error: `User ${email} already exists`
             }), {
-            status: 400,
-        });
-    }
-
-    if (missingFields.length > 0) {
-        throw new Response(`Missing required fields: ${missingFields.join(', ')}`, {
-            status: 400,
+                status: 400,
         });
     }
 
