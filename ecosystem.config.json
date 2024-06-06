@@ -3,7 +3,7 @@
     {
       "name": "em2024-frontend",
       "port": "4322",
-      "script": "node ./dist/server/entry.mjs",
+      "script": "bun run preview",
       "watch": true,
       "watch_options": {
         "followSymlinks": false
