@@ -1,4 +1,4 @@
-# Hairstyle
+# EM 2024 frontend
 
 ## 🧞 Commands
 

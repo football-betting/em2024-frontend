@@ -10,14 +10,14 @@ export async function POST(context: APIContext): Promise<Response> {
         typeof email !== "string" ||
         email.length < 3
     ) {
-        return new Response(JSON.stringify({ error: "Invalid email" }), {
+        return new Response(JSON.stringify({ error: "Ungültige E-Mail" }), {
             status: 400
         });
     }
 
     const password = formData.get("password");
-    if (typeof password !== "string" || password.length < 2 || password.length > 255) {
-        return new Response(JSON.stringify({ error: "Invalid password" }), {
+    if (typeof password !== "string" || password.length < 4 || password.length > 255) {
+        return new Response(JSON.stringify({ error: "Ungültiges Passwort" }), {
             status: 400
         });
     }
@@ -27,7 +27,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!existingUser) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password"
+                error: "E-Mail ist bei uns nicht registriert."
             }),
             {
                 status: 400
@@ -39,7 +39,7 @@ export async function POST(context: APIContext): Promise<Response> {
     if (!validPassword) {
         return new Response(
             JSON.stringify({
-                error: "Incorrect email or password"
+                error: "Falsche E-Mail oder falsches Passwort."
             }),
             {
                 status: 400

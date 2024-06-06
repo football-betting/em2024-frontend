@@ -6,6 +6,7 @@ export interface DatabaseUser {
     password?: string;
     firstName: string;
     lastName: string;
+    username: string;
     department: string;
     winner: string;
     secretWinner: string;

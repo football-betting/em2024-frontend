@@ -17,6 +17,7 @@ export const user = sqliteTable('user', {
     password: text('password').notNull(),
     firstName: text('firstName').notNull(),
     lastName: text('lastName').notNull(),
+    username: text('username').notNull(),
     department: text('department').notNull(),
     winner: text('winner').notNull(),
     secretWinner: text('secretWinner').notNull(),

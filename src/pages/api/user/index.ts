@@ -10,6 +10,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     const firstName = formData.get("firstName")?.toString();
     const lastName = formData.get("lastName")?.toString();
+    const username = formData.get("username")?.toString();
     const department = formData.get("department")?.toString();
     const winner = formData.get("winner")?.toString();
     const secretWinner = formData.get("secretWinner")?.toString();
@@ -20,6 +21,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     if (!password) missingFields.push("password");
     if (!firstName) missingFields.push("firstName");
     if (!lastName) missingFields.push("lastName");
+    if (!username) missingFields.push("username");
     if (!department) missingFields.push("department");
     if (!winner) missingFields.push("winner");
     if (!secretWinner) missingFields.push("secretWinner");
@@ -43,9 +45,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     try {
         password = await new Argon2id().hash(password);
-        await createUser({ email, password, firstName, lastName, department, winner, secretWinner})
+        await createUser({ email, password, firstName, lastName, username, department, winner, secretWinner})
 
-        return new Response();
+        return redirect("/login?registered=true");
     } catch (error) {
         return new Response(
             JSON.stringify({

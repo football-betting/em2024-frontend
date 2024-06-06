@@ -26,21 +26,22 @@ if (user) {
 
             <p id="form-error" class="text-red-500"></p>
 
-            <form class="space-y-6" action="/api/auth/login" method="POST">
+            <form class="space-y-6 mt-3" action="/api/user" method="POST">
                 <Input name="email" label="E-Mail" type="email" placeholder="Deine E-mail-Adresse"/>
                 <Input name="password" label="Passwort" type="password" placeholder="Vergib ein Passwort"/>
+                <Input name="rePassword" label="Passwort wiederholen" type="password" placeholder="Gib dein neues Passwort noch einmal ein."/>
 
                 <Input name="firstName" label="Name" placeholder="Deine Name"/>
                 <Input name="lastName" label="Nachname" placeholder="Dein Nachname"/>
-
+                <Input name="username" label="Benutzername" placeholder="Der Benutzername wird in der Ranking angezeigt"/>
 
                 <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
                     <label for="department" class="note_sans block text-xs font-bold text-gray-400">Standort</label>
-                    <select name="department" id="department" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                    <select required name="department" id="department" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
                         <option disabled selected value="">Dein Standort</option>
                         <option value="Maintz">Mainz</option>
                         <option value="Mannheim">Mannheim</option>
-                        <option value="Langenfeld">Langenfeld</option>
+                        <option value="Langenfeld">Langenfeld / Siegen</option>
                     </select>
                 </div>
 
@@ -50,7 +51,7 @@ if (user) {
 
                 <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
                     <label for="winner" class="note_sans block text-xs font-bold text-gray-400">Gewinner</label>
-                    <select name="winner" id="winner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                    <select required name="winner" id="winner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
                         <option disabled selected value="">Wähle einen Gewinner.</option>
                         <option value="ALB">Albanien</option>
                         <option value="BEL">Belgien</option>
@@ -81,7 +82,7 @@ if (user) {
 
                 <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
                     <label for="secretWinner" class="note_sans block text-xs font-bold text-gray-400">Geheimen Gewinner</label>
-                    <select name="secretWinner" id="secretWinner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                    <select required name="secretWinner" id="secretWinner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
                         <option disabled selected value="">Wähle einen geheimen Gewinner.</option>
                         <option value="ALB">Albanien</option>
                         <option value="BEL">Belgien</option>
@@ -131,6 +132,16 @@ if (user) {
         e.preventDefault();
         errorMessageElement.innerText = "";
         const formElement = e.target as HTMLFormElement;
+
+        const password = formElement.querySelector('[name="password"]').value;
+        const rePassword = formElement.querySelector('[name="rePassword"]').value;
+
+        if (password !== rePassword) {
+            errorMessageElement.innerText = "Die Passwörter stimmen nicht überein.";
+            errorMessageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+            return;
+        }
+
         const response = await fetch(
             formElement.action,
             {
@@ -143,6 +154,7 @@ if (user) {
             window.location.assign(response.url);
         } else {
             errorMessageElement.innerText = (await response.json()).error;
+            errorMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     });
 </script>

@@ -21,6 +21,7 @@ export async function createUser(newUser: DatabaseUser) {
         password: newUser.password,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
+        username: newUser.username,
         department: newUser.department,
         winner: newUser.winner,
         secretWinner: newUser.secretWinner
