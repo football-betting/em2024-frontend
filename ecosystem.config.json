@@ -2,19 +2,16 @@
   "apps": [
     {
       "name": "em2024-frontend",
-      "port": "4322",
-      "script": "bun run preview --port=4322",
-      "watch": true,
-      "watch_options": {
-        "followSymlinks": false
-      },
+      "script": "node ./dist/server/entry.mjs",
+      "port": 4322,
+      "watch": false,
       "autorestart": true,
-      "restart_delay": 4000,
+      "restart_delay": 5000,
       "log_date_format": "YYYY-MM-DD HH:mm:ss",
       "out_file": "/var/log/em2024-frontend-pm2.log",
       "error_file": "/var/log/em2024-frontend-error-pm2.log",
       "combine_logs": true,
-      "max_memory_restart": "200M"
+      "max_memory_restart": "500M"
     }
   ]
 }
