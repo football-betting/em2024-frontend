@@ -6,23 +6,38 @@ import {saveTip, getTipByUserAndMatch} from "../../../lib/tip.ts";
 export const POST: APIRoute = async (context: APIContext) => {
 
     if(!context.locals.session || !context.locals.session.userId) {
-        return new Response('user is not logged in', {
-            status: 401
-        });
+        return new Response(
+            JSON.stringify({
+                error: "user is not logged in"
+            }),
+            {
+                status: 401,
+            }
+        );
     }
     const userId = parseInt(context.locals.session.userId);
 
     if(isNaN(userId) || !userId) {
-        return new Response('userId not found', {
-            status: 401
-        });
+        return new Response(
+            JSON.stringify({
+                error: "UserId not found"
+            }),
+            {
+                status: 401,
+            }
+        );
     }
 
     const matchId = parseInt(context.params.matchId);
     if(isNaN(matchId) || !matchId) {
-        return new Response('MatchId not found', {
-            status: 401
-        });
+        return new Response(
+            JSON.stringify({
+                error: "MatchId not found"
+            }),
+            {
+                status: 401,
+            }
+        );
     }
 
     const match = await getMatchById(matchId);
