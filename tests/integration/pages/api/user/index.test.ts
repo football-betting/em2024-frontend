@@ -98,4 +98,36 @@ describe('POST API Route', () => {
         expect(jsonResponse.error).toBeDefined;
         expect(jsonResponse.error).toBe('Missing required fields: username, departments');
     });
+
+    it('should handle formData correctly', async () => {
+
+        const mockFormData = {
+            get: vi.fn((key) => {
+                const data = {
+                    email: 'test123@example.com',
+                    password: 'password123!&/!',
+                    firstName: 'Test',
+                    lastName: 'User',
+                    username: 'username',
+                    department: 'Langenfeld',
+                    winner: 'DEU',
+                    secretWinner: 'DEU'
+                };
+                return data[key];
+            }),
+        };
+
+        const mockRequest = {
+            formData: vi.fn().mockResolvedValue(mockFormData)
+        };
+
+        const mockRedirect = vi.fn();
+
+        const response = await POST({request: mockRequest, redirect: mockRedirect});
+
+        expect(response.status).toBe(400);
+        const jsonResponse = await response.json();
+        expect(jsonResponse.error).toBeDefined;
+        expect(jsonResponse.error).toBe('Winner and secret winner cannot be the same team.');
+    });
 });

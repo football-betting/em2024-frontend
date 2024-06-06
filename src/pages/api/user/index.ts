@@ -46,6 +46,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         });
     }
 
+    if (winner === secretWinner) {
+        return new Response(
+            JSON.stringify({
+                error: `Winner and secret winner cannot be the same team.`
+            }), {
+                status: 400,
+            });
+    }
+
     try {
         password = await new Argon2id().hash(password);
         await createUser({ email, password, firstName, lastName, username, department, winner, secretWinner})
