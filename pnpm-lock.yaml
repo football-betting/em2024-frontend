@@ -109,7 +109,7 @@ importers:
         specifier: ^0.20.17
         version: 0.20.18
       playwright:
-        specifier: ^1.43.1
+        specifier: ^1.44.1
         version: 1.44.1
       vite:
         specifier: ^5.2.10
