@@ -44,6 +44,7 @@
   "type": "module",
   "module": "index.ts",
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
     "@types/bun": "latest",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.5.3",
