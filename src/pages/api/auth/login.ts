@@ -34,7 +34,7 @@ export async function POST(context: APIContext): Promise<Response> {
             }
         );
     }
-
+    
     const validPassword = await new Argon2id().verify(existingUser.password, password);
     if (!validPassword) {
         return new Response(
