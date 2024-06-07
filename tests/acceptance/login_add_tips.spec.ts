@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-import db from "../src/core/db.ts";
+import db from "../../src/core/db.ts";
 import {and, eq} from "drizzle-orm";
-import {tip} from "../db/schemas/schema.ts";
+import {tip} from "../../db/schemas/schema.ts";
 
 test.afterEach(async () => {
     await db.delete(tip).where(and(eq(tip.userId, 4)));
