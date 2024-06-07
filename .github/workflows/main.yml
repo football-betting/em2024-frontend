@@ -32,7 +32,7 @@ jobs:
         run: pnpm run init-demo-data
 
       - name: Run tests with Vitest
-        run: pnpm exec vitest
+        run: vitest --no-file-parallelism
 
       - name: Install Playwright Dependencies
         run: npx playwright install-deps
