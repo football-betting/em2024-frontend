@@ -5,7 +5,7 @@ import {getTipByUserAndMatchIds} from "../lib/tip";
 import Flag from '../components/Flag.astro';
 import Input from '../components/Input.astro';
 import Button from '../components/Button.astro';
-
+import "./../styles/index.css";
 const user = Astro.locals.user;
 if (!user) {
     return Astro.redirect("/login");
