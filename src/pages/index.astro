@@ -99,10 +99,10 @@ const groupedGames = validGames.reduce((acc, game) => {
                                             <div class="match-tip">
                                                 <form class={`match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" data-form-id={game.id} action={`/api/tip/${game.id}`}>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
-                                                        <Input type="number" name="tip1" value={game.tipHome} background="bg-neutral-900" />
+                                                        <Input type="number" name="tip1" value={game.tipHome} background="bg-neutral-900" extraAttributes={{ min: 0, max: 20 }}/>
                                                     </div>
                                                     <div class="match-tip-grid-score2 pr-4 pb-2">
-                                                        <Input type="number" name="tip2" value={game.tipAway} background="bg-neutral-900" />
+                                                        <Input type="number" name="tip2" value={game.tipAway} background="bg-neutral-900" extraAttributes={{ min: 0, max: 20 }}/>
                                                     </div>
                                                     <div class="match-tip-grid-score-last-box">
                                                         <div class="ml-6 mr-6 xl:mr-0">
