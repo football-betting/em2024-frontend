@@ -29,6 +29,7 @@ export const POST: APIRoute = async (context: APIContext) => {
     }
 
     const matchId = parseInt(context.params.matchId);
+
     if(isNaN(matchId) || !matchId) {
         return new Response(
             JSON.stringify({
@@ -48,7 +49,7 @@ export const POST: APIRoute = async (context: APIContext) => {
                 error: "Match not found"
             }),
             {
-                status: 500,
+                status: 401,
             }
         );
     }
@@ -62,7 +63,7 @@ export const POST: APIRoute = async (context: APIContext) => {
                 error: "For games in the past you can not type"
             }),
             {
-                status: 500,
+                status: 401,
             }
         );
     }
@@ -77,12 +78,10 @@ export const POST: APIRoute = async (context: APIContext) => {
 
     let errors = [];
     if (isNaN(tip1) || tip1 < 0 || tip1 > 20) {
-        console.error("Die Eingabe für 'tip1' ist außerhalb des erlaubten Bereichs (0-20).");
         errors.push("Die Eingabe für 'tip1' ist außerhalb des erlaubten Bereichs (0-20).");
     }
 
     if (isNaN(tip2) || tip2 < 0 || tip2 > 20) {
-        console.error("Die Eingabe für 'tip2' ist außerhalb des erlaubten Bereichs (0-20).");
         errors.push("Die Eingabe für 'tip2' ist außerhalb des erlaubten Bereichs (0-20).");
     }
 
@@ -92,7 +91,7 @@ export const POST: APIRoute = async (context: APIContext) => {
                 error: "Error " + errors.join(", ")
             }),
             {
-                status: 500,
+                status: 401,
             });
     }
 
