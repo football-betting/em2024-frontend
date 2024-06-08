@@ -34,10 +34,21 @@ jobs:
       - name: Run tests with Vitest
         run: pnpm exec vitest
 
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
       - name: Install Playwright Dependencies
+        if: steps.cache-playwright.outputs.cache-hit != 'true'
         run: npx playwright install-deps
 
       - name: Install Playwright Browsers
+        if: steps.cache-playwright.outputs.cache-hit != 'true'
         run: npx playwright install
 
       - name: Run Playwright tests
