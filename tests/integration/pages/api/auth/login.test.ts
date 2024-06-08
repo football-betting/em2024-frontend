@@ -3,13 +3,13 @@ import { POST } from '../../../../../src/pages/api/auth/login';
 
 describe('POST API Route', () => {
     it('returns error when email is invalid', async () => {
-        const mockContext = {
-            request: {
-                formData: vi.fn().mockResolvedValue({
-                    get: vi.fn(() => 'a@')
-                })
-            }
-        };
+        // const mockContext = {
+        //     request: {
+        //         formData: vi.fn().mockResolvedValue({
+        //             get: vi.fn(() => 'a@')
+        //         })
+        //     }
+        // };
         expect(true).toBe(true);
         // const response = await POST(mockContext);
         //
