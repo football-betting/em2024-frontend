@@ -50,7 +50,6 @@
     "@vitest/coverage-v8": "^1.5.3",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.17",
-    "playwright": "^1.44.1",
     "vite": "^5.2.10",
     "vitest": "^1.5.3"
   },
