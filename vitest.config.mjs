@@ -6,7 +6,9 @@ dotenv.config({ path: './.env.test' })
 export default defineConfig({
     test: {
         exclude: [
-            ...configDefaults.exclude
+            ...configDefaults.exclude,
+            'packages/template/*',
+            'tests/acceptance/**',
         ],
     },
 })
