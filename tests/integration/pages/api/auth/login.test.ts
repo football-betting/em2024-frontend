@@ -41,4 +41,28 @@ describe('POST API Route', () => {
         expect(jsonResponse.error).toBeDefined();
         expect(jsonResponse.error).toBe('Ungültiges Passwort');
     });
+
+    it('returns error when email is not registered', async () => {
+        const mockContext = {
+            request: {
+                formData: vi.fn().mockResolvedValue({
+                    get: vi.fn((key) => {
+                        const data = {
+                            email: 'test@test.com',
+                            password: '1234'
+                        };
+                        return data[key];
+                    }),
+                })
+            }
+        };
+
+        const response = await POST(mockContext);
+
+        expect(response.status).toBe(400);
+
+        const jsonResponse = await response.json();
+        expect(jsonResponse.error).toBeDefined();
+        expect(jsonResponse.error).toBe('E-Mail ist bei uns nicht registriert.');
+    });
 });
