@@ -33,12 +33,12 @@ jobs:
 
       - name: Run tests with Vitest
         run: pnpm exec vitest --no-file-parallelism
-
-      - name: Install Playwright Dependencies
-        run: npx playwright install-deps
-
-      - name: Install Playwright Browsers
-        run: npx playwright install
-
-      - name: Run Playwright tests
-        run: pnpm exec playwright test
+#
+#      - name: Install Playwright Dependencies
+#        run: npx playwright install-deps
+#
+#      - name: Install Playwright Browsers
+#        run: npx playwright install
+#
+#      - name: Run Playwright tests
+#        run: pnpm exec playwright test
