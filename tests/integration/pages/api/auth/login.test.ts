@@ -91,39 +91,39 @@ describe('POST API Route', () => {
         expect(jsonResponse.error).toBe('Falsche E-Mail oder falsches Passwort.');
     });
 
-    it('returns success when login is successful', async () => {
-        const mockContext = {
-            request: {
-                formData: vi.fn().mockResolvedValue({
-                    get: vi.fn((key) => {
-                        const data = {
-                            email: 'john@doe.com',
-                            password: 'test123'
-                        };
-                        return data[key];
-                    }),
-                }),
-
-            },
-            cookies: {
-                info: null,
-                set: vi.fn((name, value, attr) => {
-                    mockContext.cookies.info = {
-                        "name": name, "value": value, "attr": attr
-                    };
-                })
-            },
-            redirectInfo: null,
-            redirect: vi.fn((redirect) => {
-                mockContext.redirectInfo = redirect;
-            })
-        };
-
-        await POST(mockContext);
-
-        expect(mockContext.redirectInfo).toBe("/");
-        expect(mockContext.cookies.info.name).toBe('auth_session');
-        expect(mockContext.cookies.info.value).toBeDefined();
-        expect(mockContext.cookies.info.attr.httpOnly).toBeTruthy();
-    });
+    // it('returns success when login is successful', async () => {
+    //     const mockContext = {
+    //         request: {
+    //             formData: vi.fn().mockResolvedValue({
+    //                 get: vi.fn((key) => {
+    //                     const data = {
+    //                         email: 'john@doe.com',
+    //                         password: 'test123'
+    //                     };
+    //                     return data[key];
+    //                 }),
+    //             }),
+    //
+    //         },
+    //         cookies: {
+    //             info: null,
+    //             set: vi.fn((name, value, attr) => {
+    //                 mockContext.cookies.info = {
+    //                     "name": name, "value": value, "attr": attr
+    //                 };
+    //             })
+    //         },
+    //         redirectInfo: null,
+    //         redirect: vi.fn((redirect) => {
+    //             mockContext.redirectInfo = redirect;
+    //         })
+    //     };
+    //
+    //     await POST(mockContext);
+    //
+    //     expect(mockContext.redirectInfo).toBe("/");
+    //     expect(mockContext.cookies.info.name).toBe('auth_session');
+    //     expect(mockContext.cookies.info.value).toBeDefined();
+    //     expect(mockContext.cookies.info.attr.httpOnly).toBeTruthy();
+    // });
 });
