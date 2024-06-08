@@ -33,6 +33,7 @@ export default defineConfig({
   },
   use: {
     baseURL: 'http://localhost:4322/',
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
