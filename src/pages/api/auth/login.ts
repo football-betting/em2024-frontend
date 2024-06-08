@@ -1,4 +1,4 @@
-import { lucia } from "../../../lib/auth";
+// import { lucia } from "../../../lib/auth";
 import { Argon2id } from "oslo/password";
 import type { APIContext } from "astro";
 import {getUserByEmail} from "../../../lib/user.ts";
@@ -34,7 +34,7 @@ export async function POST(context: APIContext): Promise<Response> {
             }
         );
     }
-    
+
     const validPassword = await new Argon2id().verify(existingUser.password, password);
     if (!validPassword) {
         return new Response(
