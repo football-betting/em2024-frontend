@@ -6,22 +6,7 @@ dotenv.config({ path: './.env.test' })
 export default defineConfig({
     test: {
         exclude: [
-            ...configDefaults.exclude,
-            'packages/template/*',
-            'tests/acceptance/**',
+            ...configDefaults.exclude
         ],
-        coverage: {
-            reporter: ['text', 'html'],
-            exclude:[
-                ...coverageConfigDefaults.exclude,
-                '**/interfaces/**',
-                '**/*.vue',
-                '**/layouts/**',
-                '**/pages/**',
-                '**/{astro,playwright,tailwind}.config.*'
-            ]
-        },
-
-
     },
 })
