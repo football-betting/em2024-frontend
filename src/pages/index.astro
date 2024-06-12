@@ -5,6 +5,7 @@ import {getTipByUserAndMatchIds} from "../lib/tip";
 import Flag from '../components/Flag.astro';
 import Input from '../components/Input.astro';
 import Button from '../components/Button.astro';
+import ShortTable from '../components/ShortTable.astro';
 import "./../styles/index.css";
 const user = Astro.locals.user;
 if (!user) {
@@ -74,7 +75,10 @@ const groupedGames = validGames.reduce((acc, game) => {
 <LogginLayout title="Dashboard">
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-5 px-5">
-        <div></div>
+        <div>
+            <h1>Tabelle</h1>
+            <ShortTable />
+        </div>
 
         <div>
             <h1>Spielplan</h1>
