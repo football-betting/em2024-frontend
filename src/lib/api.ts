@@ -20,8 +20,6 @@ export async function getRating(userId: number) {
     const mannheim = data.table.departments.Mannheim;
     const mainz  = data.table.departments.Maintz;
 
-
-    console.log(langenfeld);
     return {
         topThree,
         userAndNeighbors,
