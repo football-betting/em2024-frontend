@@ -24,6 +24,11 @@ describe('getRating', () => {
                     { user_id: 6 },
                     { user_id: 7 },
                 ],
+                departments: {
+                    Langenfeld: {},
+                    Mannheim: {},
+                    Maintz: {},
+                }
             },
         };
 
@@ -32,10 +37,8 @@ describe('getRating', () => {
 
         const result = await getRating(5);
 
-        expect(result).toEqual({
-            topThree: mockData.table.global.slice(0, 3),
-            userAndNeighbors: mockData.table.global.slice(3, 6),
-        });
+        expect(result.topThree).toEqual(mockData.table.global.slice(0, 3));
+        expect(result.userAndNeighbors).toEqual(mockData.table.global.slice(3, 6));
     });
 
     test('returns top six when user position is 0', async () => {
@@ -50,29 +53,37 @@ describe('getRating', () => {
                     { user_id: 6 },
                     { user_id: 7 },
                 ],
+                departments: {
+                    Langenfeld: {},
+                    Mannheim: {},
+                    Maintz: {},
+                }
             },
         };
         fetch.mockResolvedValue(createFetchResponse(mockData))
 
         const result = await getRating(1);
-        expect(result).toEqual({
-            topThree: mockData.table.global.slice(0, 6),
-            userAndNeighbors: [],
-        });
+        expect(result.topThree).toEqual(mockData.table.global.slice(0, 6));
+        expect(result.userAndNeighbors).toEqual([]);
+
     });
 
     test('returns empty arrays when global table is empty', async () => {
         const mockData = {
             table: {
                 global: [],
+                departments: {
+                    Langenfeld: {},
+                    Mannheim: {},
+                    Maintz: {},
+                }
             },
         };
         fetch.mockResolvedValue(createFetchResponse(mockData))
 
         const result = await getRating(1);
-        expect(result).toEqual({
-            topThree: [],
-            userAndNeighbors: [],
-        });
+
+        expect(result.topThree).toEqual([]);
+        expect(result.userAndNeighbors).toEqual([]);
     });
 });
