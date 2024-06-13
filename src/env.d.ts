@@ -5,3 +5,7 @@ declare namespace App {
         user: import("lucia").User | null;
     }
 }
+
+interface ImportMetaEnv {
+    readonly API_URL: string;
+}

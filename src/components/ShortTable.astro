@@ -1,212 +1,135 @@
-
 ---
-import type { ApiRatingResponse } from '../interfaces/table';
+import {getRating} from '../lib/api';
 
-const userId = Astro.locals.user.id;
-
-const response = await fetch('https://em2024-api.vcec.cloud/rating');
-const data: ApiRatingResponse = await response.json();
-
-let topThree = data.table.global.slice(0, 3);
-const userPosition = data.table.global.slice(3).findIndex(user => user.user_id === userId);
-
-let userAndNeighbors = [];
-if (userPosition > 0) {
-    const start = Math.max(0, userPosition - 1);
-    const end = userPosition + 2;
-    userAndNeighbors = data.table.global.slice(3).slice(start, end);
-} else {
-    topThree = data.table.global.slice(0, 6);
-}
+const userId = Number(Astro.locals.user.id);
+const { topThree, userAndNeighbors, langenfeld, mannheim, mainz } = await getRating(userId);
 ---
 
-<table class="min-w-full text-left mt-11">
-    <thead class="text-xs text-zinc-400 font-bold">
-    <tr>
-        <th class="w-1/6 py-2 px-4 ">Position</th>
-        <th class="w-3/6 py-2 px-4 ">Username</th>
-        <th class="w-1/6 py-2 px-4">Punkte</th>
-    </tr>
-    </thead>
-    <tbody>
-        {topThree.map((user, index) => (
-                <tr class={`bg-neutral-${index % 2 === 0 ? '700' : '800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
-                    <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
-                    <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
-                    <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
-                </tr>
-        ))}
 
-        {userAndNeighbors.length > 0 && (
-                <tr>
-                    <td class="text-center p-4" colspan="3">...</td>
-                </tr>
-        )}
+<section class="flex flex-row flex-wrap">
 
-        {userAndNeighbors.map((user, index) => (
-                <tr class={`bg-neutral-${index % 2 === 0 ? '700' : '800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
-                    <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
-                    <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
-                    <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
-                </tr>
-        ))}
-    </tbody>
-</table>
+    <input id="tab-one" type="radio" name="tabs" class="peer/tab-one opacity-0 absolute" checked />
+    <label for="tab-one" class="text-zinc-400 px-8 hover:font-black peer-checked/tab-one:border-b-red-500 peer-checked/tab-one:text-white peer-checked/tab-one:font-extrabold peer-checked/tab-one:border-b-2 cursor-pointer p-4 block ">
+        Global
+    </label>
 
-<!--<div>-->
-<!--    <pre>{JSON.stringify(data, null, 2)}</pre>-->
-<!--</div>-->
+    <input id="tab-two" type="radio" name="tabs" class="peer/tab-two opacity-0 absolute" />
+    <label for="tab-two" class="text-zinc-400 px-8 hover:font-black peer-checked/tab-two:border-b-red-500 peer-checked/tab-two:text-white peer-checked/tab-two:font-extrabold peer-checked/tab-two:border-b-2 cursor-pointer p-4 block ">
+        Langenfeld
+    </label>
 
-<!--<p>Tabelle</p>-->
-<!--<div class=" w-full max-w-md  [&_label]:cursor-pointer">-->
+    <input id="tab-three" type="radio" name="tabs" class="peer/tab-three opacity-0 absolute" />
+    <label for="tab-three" class="text-zinc-400 px-8 hover:font-black peer-checked/tab-three:border-b-red-500 peer-checked/tab-three:text-white peer-checked/tab-three:font-extrabold peer-checked/tab-three:border-b-2 cursor-pointer p-4 block ">
+        Mannheim
+    </label>
 
-<!--    &lt;!&ndash; main tab radio buttons &ndash;&gt;-->
-<!--    <input type="radio" name="sub-tab-toggñe" id="radio-tab-1" class="sr-only peer/tab-1" checked>-->
-<!--    <input type="radio" name="sub-tab-toggñe" id="radio-tab-2" class="sr-only peer/tab-2">-->
-<!--    <input type="radio" name="sub-tab-toggñe" id="radio-tab-3" class="sr-only peer/tab-3">-->
+    <input id="tab-four" type="radio" name="tabs" class="peer/tab-four opacity-0 absolute" />
+    <label for="tab-four" class="text-zinc-400 px-8 hover:font-black peer-checked/tab-four:border-b-red-500 peer-checked/tab-four:text-white peer-checked/tab-four:font-extrabold peer-checked/tab-four:border-b-2 cursor-pointer p-4 block ">
+        Mainz
+    </label>
 
-<!--    &lt;!&ndash; main tabs &ndash;&gt;-->
-<!--    <div class=" px-4 flex gap-[1px]-->
-<!--                peer-checked/tab-1:[&>label:nth-child(1)]:bg-blue-800-->
-<!--                peer-checked/tab-2:[&>label:nth-child(2)]:bg-green-800-->
-<!--                peer-checked/tab-3:[&>label:nth-child(3)]:bg-rose-800-->
-<!--                *:rounded-t-xl-->
-<!--                *:py-1-->
-<!--                *:px-4-->
-<!--                *:transition-->
-<!--                *:duration-300-->
-<!--                hover:*:bg-zinc-800-->
-<!--            ">-->
-<!--        <label for="radio-tab-1">Tab 1</label>-->
-<!--        <label for="radio-tab-2">Tab 2</label>-->
-<!--        <label for="radio-tab-3">Tab 3</label>-->
-<!--    </div>-->
+    <div class="basis-full h-0 border-b w-full border-neutral-700"></div>
 
-<!--    &lt;!&ndash; sub tabs and contents &ndash;&gt;-->
-<!--    <div class="rounded-xl bg-zinc-800 p-6-->
-<!--                [&_label]:rounded-md-->
-<!--                [&_label]:text-white-->
-<!--                [&_label]:py-1-->
-<!--                [&_label]:px-4-->
-<!--                [&_label]:w-full-->
-<!--                [&_label]:transition-->
-<!--                [&_label]:duration-300-->
-<!--                [&_label]:border-b-->
-<!--                [&_label]:border-zinc-500-->
+    <div class="hidden peer-checked/tab-one:block w-full">
 
-<!--                peer-checked/tab-1:[&_#sub-tab-1]:opacity-100-->
-<!--                peer-checked/tab-1:[&_#sub-tab-1]:pointer-events-auto-->
-<!--                peer-checked/tab-1:[&_#panels-contents-1]:opacity-100-->
+        <table class="min-w-full text-left mt-11">
+            <thead class="text-sm text-zinc-400 font-bold">
+            <tr>
+                <th class="w-1/6 py-2 px-4 ">Position</th>
+                <th class="w-3/6 py-2 px-4 ">Username</th>
+                <th class="w-1/6 py-2 px-4">Punkte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {topThree.map((user, index) => (
+                    <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
+                        <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
+                        <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
+                    </tr>
+            ))}
 
-<!--                peer-checked/tab-2:[&_#sub-tab-2]:opacity-100-->
-<!--                peer-checked/tab-2:[&_#sub-tab-2]:pointer-events-auto-->
-<!--                peer-checked/tab-2:[&_#panels-contents-2]:opacity-100-->
+            {userAndNeighbors.length > 0 && (
+                    <tr>
+                        <td class="text-center p-4" colspan="3">...</td>
+                    </tr>
+            )}
 
-<!--                peer-checked/tab-3:[&_#sub-tab-3]:opacity-100-->
-<!--                peer-checked/tab-3:[&_#sub-tab-3]:pointer-events-auto-->
-<!--                peer-checked/tab-3:[&_#panels-contents-3]:opacity-100-->
+            {userAndNeighbors.map((user, index) => (
+                    <tr class={`bg-neutral-${index % 2 === 0 ? '700' : '800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
+                        <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
+                        <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden peer-checked/tab-two:block w-full">
 
-<!--            ">-->
-<!--        &lt;!&ndash; sub tab radio buttons &ndash;&gt;-->
-<!--        <input type="radio" name="panel-toggle-1" id="radio-panel-1.1" class="sr-only peer/panel-1.1" checked>-->
-<!--        <input type="radio" name="panel-toggle-1" id="radio-panel-1.2" class="sr-only peer/panel-1.2">-->
-<!--        <input type="radio" name="panel-toggle-1" id="radio-panel-1.3" class="sr-only peer/panel-1.3">-->
-<!--        <input type="radio" name="panel-toggle-2" id="radio-panel-2.1" class="sr-only peer/panel-2.1" checked>-->
-<!--        <input type="radio" name="panel-toggle-2" id="radio-panel-2.2" class="sr-only peer/panel-2.2">-->
-<!--        <input type="radio" name="panel-toggle-2" id="radio-panel-2.3" class="sr-only peer/panel-2.3">-->
-<!--        <input type="radio" name="panel-toggle-3" id="radio-panel-3.1" class="sr-only peer/panel-3.1" checked>-->
-<!--        <input type="radio" name="panel-toggle-3" id="radio-panel-3.2" class="sr-only peer/panel-3.2">-->
-<!--        <input type="radio" name="panel-toggle-3" id="radio-panel-3.3" class="sr-only peer/panel-3.3">-->
+        <table class="min-w-full text-left mt-11">
+            <thead class="text-sm text-zinc-400 font-bold">
+            <tr>
+                <th class="w-1/6 py-2 px-4 ">Position</th>
+                <th class="w-3/6 py-2 px-4 ">Username</th>
+                <th class="w-1/6 py-2 px-4">Punkte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {langenfeld.map((user, index) => (
+                    <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
+                        <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
+                        <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
 
-<!--        &lt;!&ndash; sub tabs &ndash;&gt;-->
-<!--        <div class="grid [template-grid-areas:'stack']-->
-<!--                    *:[grid-area:stack]-->
-<!--                    *:transition-opacity-->
-<!--                    *:duration-300-->
-<!--                    *:opacity-0-->
-<!--                    *:pointer-events-none-->
-<!--                    *:flex-->
-<!--                    *:gap-[1px]-->
+    </div>
+    <div class="hidden peer-checked/tab-three:block w-full">
 
-<!--                    peer-checked/panel-1.1:[&_#sub-tab-1>label:nth-child(1)]:bg-blue-800-->
-<!--                    peer-checked/panel-1.2:[&_#sub-tab-1>label:nth-child(2)]:bg-blue-800-->
-<!--                    peer-checked/panel-1.3:[&_#sub-tab-1>label:nth-child(3)]:bg-blue-800-->
+        <table class="min-w-full text-left mt-11">
+            <thead class="text-sm text-zinc-400 font-bold">
+            <tr>
+                <th class="w-1/6 py-2 px-4 ">Position</th>
+                <th class="w-3/6 py-2 px-4 ">Username</th>
+                <th class="w-1/6 py-2 px-4">Punkte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {mannheim.map((user, index) => (
+                    <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
+                        <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
+                        <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
 
-<!--                    peer-checked/panel-2.1:[&_#sub-tab-2>label:nth-child(1)]:bg-green-800-->
-<!--                    peer-checked/panel-2.2:[&_#sub-tab-2>label:nth-child(2)]:bg-green-800-->
-<!--                    peer-checked/panel-2.3:[&_#sub-tab-2>label:nth-child(3)]:bg-green-800-->
+    </div>
+    <div class="hidden peer-checked/tab-four:block w-full">
+        <table class="min-w-full text-left mt-11">
+            <thead class="text-sm text-zinc-400 font-bold">
+            <tr>
+                <th class="w-1/6 py-2 px-4 ">Position</th>
+                <th class="w-3/6 py-2 px-4 ">Username</th>
+                <th class="w-1/6 py-2 px-4">Punkte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {mainz.map((user, index) => (
+                    <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class="w-1/6 p-4 font-semibold ">{user.position}</td>
+                        <td class={`w-3/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.name}</td>
+                        <td class={`w-1/6 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.score_sum}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
+    </div>
 
-<!--                    peer-checked/panel-3.1:[&_#sub-tab-3>label:nth-child(1)]:bg-rose-800-->
-<!--                    peer-checked/panel-3.2:[&_#sub-tab-3>label:nth-child(2)]:bg-rose-800-->
-<!--                    peer-checked/panel-3.3:[&_#sub-tab-3>label:nth-child(3)]:bg-rose-800-->
-<!--                ">-->
+</section>
 
-<!--            <div id="sub-tab-1">-->
-<!--                <label for="radio-panel-1.1">SubTab 1.1</label>-->
-<!--                <label for="radio-panel-1.2">SubTab 1.2</label>-->
-<!--                <label for="radio-panel-1.3">SubTab 1.3</label>-->
-<!--            </div>-->
 
-<!--            <div id="sub-tab-2">-->
-<!--                <label for="radio-panel-2.1">SubTab 2.1</label>-->
-<!--                <label for="radio-panel-2.2">SubTab 2.2</label>-->
-<!--                <label for="radio-panel-2.3">SubTab 2.3</label>-->
-<!--            </div>-->
-
-<!--            <div id="sub-tab-3">-->
-<!--                <label for="radio-panel-3.1">SubTab 3.1</label>-->
-<!--                <label for="radio-panel-3.2">SubTab 3.2</label>-->
-<!--                <label for="radio-panel-3.3">SubTab 3.3</label>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; content panels &ndash;&gt;-->
-<!--        <div class="mt-2 grid [grid-template-areas:'contents']-->
-<!--                    *:[grid-area:contents]-->
-<!--                    *:transition-opacity-->
-<!--                    *:duration-300-->
-<!--                    *:rounded-md-->
-<!--                    *:grid-->
-<!--                    *:[grid-template-areas:'panels']-->
-<!--                    *:opacity-0-->
-
-<!--                    [&>div>div]:[grid-area:panels]-->
-<!--                    [&>div>div]:transition-opacity-->
-<!--                    [&>div>div]:duration-300-->
-<!--                    [&>div>div]:opacity-0-->
-<!--                    [&>div>div]:p-8-->
-<!--                    [&>div>div]:grid-->
-<!--                    [&>div>div]:place-content-center-->
-
-<!--                    peer-checked/panel-1.1:[&_#panel-11]:opacity-100-->
-<!--                    peer-checked/panel-1.2:[&_#panel-12]:opacity-100-->
-<!--                    peer-checked/panel-1.3:[&_#panel-13]:opacity-100-->
-
-<!--                    peer-checked/panel-2.1:[&_#panel-21]:opacity-100-->
-<!--                    peer-checked/panel-2.2:[&_#panel-22]:opacity-100-->
-<!--                    peer-checked/panel-2.3:[&_#panel-23]:opacity-100-->
-
-<!--                    peer-checked/panel-3.1:[&_#panel-31]:opacity-100-->
-<!--                    peer-checked/panel-3.2:[&_#panel-32]:opacity-100-->
-<!--                    peer-checked/panel-3.3:[&_#panel-33]:opacity-100-->
-<!--                ">-->
-<!--            <div id="panels-contents-1" class="bg-blue-800">-->
-<!--                <div id="panel-11">panel 1.1</div>-->
-<!--                <div id="panel-12">panel 1.2</div>-->
-<!--                <div id="panel-13">panel 1.3</div>-->
-<!--            </div>-->
-
-<!--            <div id="panels-contents-2" class="bg-green-800">-->
-<!--                <div id="panel-21">panel 2.1</div>-->
-<!--                <div id="panel-22">panel 2.2</div>-->
-<!--                <div id="panel-23">panel 2.3</div>-->
-<!--            </div>-->
-
-<!--            <div id="panels-contents-3" class="bg-rose-800">-->
-<!--                <div id="panel-31">panel 3.1</div>-->
-<!--                <div id="panel-32">panel 3.2</div>-->
-<!--                <div id="panel-33">panel 3.3</div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
