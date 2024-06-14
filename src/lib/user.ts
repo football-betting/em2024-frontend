@@ -11,10 +11,6 @@ export async function getUserById(id: number): Promise<DatabaseUser | undefined>
     return db.query.user.findFirst({where: eq(user.id, id)});
 }
 
-export async function getAllUser(): Promise<DatabaseUser[] | undefined> {
-    return db.select().from(user);
-}
-
 export async function createUser(newUser: DatabaseUser) {
     await db.insert(user).values({
         email: newUser.email,
@@ -28,8 +24,12 @@ export async function createUser(newUser: DatabaseUser) {
     });
 }
 
-export async function updateUser(newUser: DatabaseUser) {
-    await db.update(user).set(newUser).where(eq(user.id, newUser.id));
+export async function changeWinner(winner, secretWinner, id: number) {
+    const dbUser = await getUserById(id);
+    dbUser.winner = winner;
+    dbUser.secretWinner = secretWinner;
+
+    await db.update(user).set(dbUser).where(eq(user.id, id));
 }
 
 export async function deleteUser(id: number) {

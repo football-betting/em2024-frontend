@@ -37,6 +37,7 @@ const currentPath = Astro.url.pathname;
         <div class="flex gap-x-12">
             <a href="/" class={`text-sm ${currentPath === '/' ? 'pb-1 px-4 border-b-2 border-b-red-500' : 'text-zinc-400'}`}>Dashboard</a>
             <a href="/table" class={`text-sm ${currentPath === '/table' ? 'px-4 pb-1 border-b-2 border-b-red-500' : 'text-zinc-400'}`}>Tabelle</a>
+            <a href=`/user/${user.id}` class={`text-sm ${currentPath === `/user/${user.id}` ? 'px-4 pb-1 border-b-2 border-b-red-500' : 'text-zinc-400'}`}>Mein Konto</a>
             <a href="/api/auth/logout" class="text-sm text-zinc-400">Abmelden</a>
         </div>
     </nav>

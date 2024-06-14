@@ -1,0 +1,202 @@
+---
+import {getUserById} from "../../lib/user";
+import fetchApi from "../../core/api";
+import type {UserRating} from "../../interfaces/table";
+import LogginLayout from "../../layouts/LogginLayout.astro";
+import Flag from "../../components/Flag.astro";
+import Button from "../../components/Button.astro";
+import Input from "../../components/Input.astro";
+import "../../styles/index.css";
+
+
+const id = parseInt(Astro.params.id, 10);
+
+const user = Astro.locals.user;
+if (!user || !id) {
+    return Astro.redirect("/login");
+}
+const loggedUserId = user.id;
+
+const data = await fetchApi<UserRating>('user/' + id, 'data');
+
+const userInfo = await getUserById(id);
+
+const deadline = new Date('2024-06-14T21:00:00+02:00');
+---
+<LogginLayout title="User">
+    <div class="px-12 sm:px-20">
+        <h1 class="my-10">User: <span class="text-gray-400 ml-3">{data.name}</span></h1>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Name:</span>{userInfo.firstName} {userInfo.lastName}
+        </div>
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Platz:</span>{data.position}
+        </div>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Punkte:</span>{data.score_sum}
+        </div>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Richtige Ergebnisse:</span>{data.sum_win_exact}
+        </div>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Tordifferenz:</span>{data.sum_score_diff}
+        </div>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Siege:</span>{data.sum_team}
+        </div>
+
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Extra-Punkte:</span>{data.extra_point}
+        </div>
+
+        {id == loggedUserId || new Date() > deadline ? (
+            <div class="mb-2">
+                <span class="text-zinc-400 w-36 inline-block">Tipp:</span> <Flag iso={userInfo.winner} />
+            </div>
+
+            <div class="mb-2">
+                <span class="text-zinc-400 w-36 inline-block">Geheimtipp:</span> <Flag iso={userInfo.secretWinner} />
+            </div>
+
+            <p id="form-error" class="text-red-500"></p>
+            <form class="space-y-6 mt-3" style="max-width: 350px" action="/api/user/winner" method="POST">
+                <p>Du kannst den Gewinner und den geheimen Gewinner noch bis zum Beginn des ersten Spiels ändern. Hier ist das Formular dazu.</p>
+                <input type="hidden" name="user_id" value={id} />
+                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
+                    <label for="winner" class="note_sans block text-xs font-bold text-gray-400">Gewinner</label>
+                    <select required name="winner" id="winner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                        <option disabled selected value="">Wähle einen Gewinner.</option>
+                        <option value="ALB">Albanien</option>
+                        <option value="BEL">Belgien</option>
+                        <option value="DEU">Deutschland</option>
+                        <option value="DNK">Dänemark</option>
+                        <option value="ENG">England</option>
+                        <option value="FRA">Frankreich</option>
+                        <option value="GEO">Georgien</option>
+                        <option value="ITA">Italien</option>
+                        <option value="HRV">Kroatien</option>
+                        <option value="NLD">Niederlande</option>
+                        <option value="AUT">Österreich</option>
+                        <option value="POL">Polen</option>
+                        <option value="PRT">Portugal</option>
+                        <option value="ROU">Rumänien</option>
+                        <option value="SCO">Schottland</option>
+                        <option value="CHE">Schweiz</option>
+                        <option value="SRB">Serbien</option>
+                        <option value="SVK">Slowakei</option>
+                        <option value="SVN">Slowenien</option>
+                        <option value="ESP">Spanien</option>
+                        <option value="CZE">Tschechien</option>
+                        <option value="TUR">Türkei</option>
+                        <option value="UKR">Ukraine</option>
+                        <option value="HUN">Ungarn</option>
+                    </select>
+                </div>
+
+                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
+                    <label for="secretWinner" class="note_sans block text-xs font-bold text-gray-400">Geheimen Gewinner</label>
+                    <select required name="secretWinner" id="secretWinner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
+                        <option disabled selected value="">Wähle einen Gewinner.</option>
+                        <option value="ALB">Albanien</option>
+                        <option value="BEL">Belgien</option>
+                        <option value="DEU">Deutschland</option>
+                        <option value="DNK">Dänemark</option>
+                        <option value="ENG">England</option>
+                        <option value="FRA">Frankreich</option>
+                        <option value="GEO">Georgien</option>
+                        <option value="ITA">Italien</option>
+                        <option value="HRV">Kroatien</option>
+                        <option value="NLD">Niederlande</option>
+                        <option value="AUT">Österreich</option>
+                        <option value="POL">Polen</option>
+                        <option value="PRT">Portugal</option>
+                        <option value="ROU">Rumänien</option>
+                        <option value="SCO">Schottland</option>
+                        <option value="CHE">Schweiz</option>
+                        <option value="SRB">Serbien</option>
+                        <option value="SVK">Slowakei</option>
+                        <option value="SVN">Slowenien</option>
+                        <option value="ESP">Spanien</option>
+                        <option value="CZE">Tschechien</option>
+                        <option value="TUR">Türkei</option>
+                        <option value="UKR">Ukraine</option>
+                        <option value="HUN">Ungarn</option>
+                    </select>
+                </div>
+
+                <Button name="Ändern" />
+            </form>
+
+            <script>
+                const errorMessageElement = document.getElementById("form-error")!;
+
+                document.querySelector('form')?.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    errorMessageElement.innerText = "";
+                    const formElement = e.target as HTMLFormElement;
+
+                    const response = await fetch(
+                        formElement.action,
+                        {
+                            method: formElement.method,
+                            body: new FormData(formElement)
+                        } as RequestInit
+                    );
+
+                    if (response.redirected) {
+                        window.location.assign(response.url);
+                    } else {
+                        errorMessageElement.innerText = (await response.json()).error;
+                    }
+                });
+                </script>
+        ) : null}
+    </div>
+
+            <div class="my-20 px-10 md:px-20">
+                <h1 class="">Spiele</h1>
+
+                <div style="max-width: 750px;">
+
+                    <div class="info-grid">
+                        <div class="info-date"></div>
+                        <div class="info-score">Ergebnis</div>
+                        <div class="info-tip">Dein Tipp</div>
+                    </div>
+
+
+
+
+                        {data.tips.map((game, index) => (
+
+                                <div class="match-grid bg-neutral-800 mt-4">
+                                    <div class="match-team-1 pt-5">
+                                        <Flag iso={game.team1.tla} /> {game.team1.name}
+                                    </div>
+                                    <div class="match-team-2 pb-5">
+                                        <Flag iso={game.team2.tla} /> {game.team2.name}
+                                    </div>
+                                    <div class="match-score-team-1 pt-5">{game.score_home}</div>
+                                    <div class="match-score-team-2 pb-5">{game.score_away}</div>
+                                    <div class="match-tip py-5">
+                                        <div class="match-tip-grid info-tip-score">
+                                            <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
+                                            <div class="match-tip-grid-score-last-box">
+                                                <div class="seven-segmnet text-xl">{game.score} Punkte</div>
+                                            </div>
+                                            <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        ))}
+                </div>
+
+
+            </div>
+</LogginLayout>

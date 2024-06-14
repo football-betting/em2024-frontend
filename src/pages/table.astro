@@ -85,7 +85,7 @@ function abbreviateUsername(username: string) {
                     {global.map((user, index) => (
                             <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
                                 <td class="w-1/12 p-4 font-semibold ">{user.position}</td>
-                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{abbreviateUsername(user.name)}</td>
+                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}><a href=`/user/${user.user_id}`>{abbreviateUsername(user.name)}</a></td>
                                 <td class={`w-2/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_win_exact}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_score_diff}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_team}</td>
@@ -129,7 +129,7 @@ function abbreviateUsername(username: string) {
                     {langenfeld.map((user, index) => (
                             <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
                                 <td class="w-1/12 p-4 font-semibold ">{user.position}</td>
-                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{abbreviateUsername(user.name)}</td>
+                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}><a href=`/user/${user.user_id}`>{abbreviateUsername(user.name)}</a></td>
                                 <td class={`w-2/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_win_exact}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_score_diff}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_team}</td>
@@ -174,7 +174,7 @@ function abbreviateUsername(username: string) {
                     {mannheim.map((user, index) => (
                             <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
                                 <td class="w-1/12 p-4 font-semibold ">{user.position}</td>
-                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{abbreviateUsername(user.name)}</td>
+                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}><a href=`/user/${user.user_id}`>{abbreviateUsername(user.name)}</a></td>
                                 <td class={`w-2/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_win_exact}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_score_diff}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_team}</td>
@@ -218,7 +218,7 @@ function abbreviateUsername(username: string) {
                     {mainz.map((user, index) => (
                             <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${user.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
                                 <td class="w-1/12 p-4 font-semibold ">{user.position}</td>
-                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{abbreviateUsername(user.name)}</td>
+                                <td class={`w-4/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}><a href=`/user/${user.user_id}`>{abbreviateUsername(user.name)}</a></td>
                                 <td class={`w-2/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_win_exact}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_score_diff}</td>
                                 <td class={`w-1/12 p-4 ${user.user_id === userId && 'text-yellow-100 font-black'}`}>{user.sum_team}</td>

@@ -1,6 +1,6 @@
 
 
-export default async function fetchApi<T>(endpoint: string): Promise<T> {
+export default async function fetchApi<T>(endpoint: string, wrappedByKey?: string): Promise<T> {
     if (endpoint.startsWith('/')) {
         endpoint = endpoint.slice(1);
     }
@@ -13,6 +13,10 @@ export default async function fetchApi<T>(endpoint: string): Promise<T> {
 
     const res = await fetch(url.toString());
     let data = await res.json();
+
+    if (wrappedByKey) {
+        data = data[wrappedByKey];
+    }
 
     return data as T;
 }
