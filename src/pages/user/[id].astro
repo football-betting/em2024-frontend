@@ -20,8 +20,6 @@ const loggedUserId = user.id;
 const data = await fetchApi<UserRating>('user/' + id, 'data');
 
 const userInfo = await getUserById(id);
-
-const deadline = new Date('2024-06-14T21:00:00+02:00');
 ---
 <LogginLayout title="User">
     <div class="px-12 sm:px-20">
@@ -54,108 +52,13 @@ const deadline = new Date('2024-06-14T21:00:00+02:00');
             <span class="text-zinc-400 pr-4 w-44 inline-block">Extra-Punkte:</span>{data.extra_point}
         </div>
 
-        {id == loggedUserId || new Date() > deadline ? (
-            <div class="mb-2">
-                <span class="text-zinc-400 w-36 inline-block">Tipp:</span> <Flag iso={userInfo.winner} />
-            </div>
+        <div class="mb-2">
+            <span class="text-zinc-400 w-36 inline-block">Tipp:</span> <Flag iso={userInfo.winner} />
+        </div>
 
-            <div class="mb-2">
-                <span class="text-zinc-400 w-36 inline-block">Geheimtipp:</span> <Flag iso={userInfo.secretWinner} />
-            </div>
-
-            <p id="form-error" class="text-red-500"></p>
-            <form class="space-y-6 mt-3" style="max-width: 350px" action="/api/user/winner" method="POST">
-                <p>Du kannst den Gewinner und den geheimen Gewinner noch bis zum Beginn des ersten Spiels ändern. Hier ist das Formular dazu.</p>
-                <input type="hidden" name="user_id" value={id} />
-                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
-                    <label for="winner" class="note_sans block text-xs font-bold text-gray-400">Gewinner</label>
-                    <select required name="winner" id="winner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
-                        <option disabled selected value="">Wähle einen Gewinner.</option>
-                        <option value="ALB">Albanien</option>
-                        <option value="BEL">Belgien</option>
-                        <option value="DEU">Deutschland</option>
-                        <option value="DNK">Dänemark</option>
-                        <option value="ENG">England</option>
-                        <option value="FRA">Frankreich</option>
-                        <option value="GEO">Georgien</option>
-                        <option value="ITA">Italien</option>
-                        <option value="HRV">Kroatien</option>
-                        <option value="NLD">Niederlande</option>
-                        <option value="AUT">Österreich</option>
-                        <option value="POL">Polen</option>
-                        <option value="PRT">Portugal</option>
-                        <option value="ROU">Rumänien</option>
-                        <option value="SCO">Schottland</option>
-                        <option value="CHE">Schweiz</option>
-                        <option value="SRB">Serbien</option>
-                        <option value="SVK">Slowakei</option>
-                        <option value="SVN">Slowenien</option>
-                        <option value="ESP">Spanien</option>
-                        <option value="CZE">Tschechien</option>
-                        <option value="TUR">Türkei</option>
-                        <option value="UKR">Ukraine</option>
-                        <option value="HUN">Ungarn</option>
-                    </select>
-                </div>
-
-                <div class="rounded-md px-3 pb-3.5 pt-2.5 shadow-sm ring-2 ring-inset ring-gray-500 focus-within:ring-gray-400 bg-neutral-800">
-                    <label for="secretWinner" class="note_sans block text-xs font-bold text-gray-400">Geheimen Gewinner</label>
-                    <select required name="secretWinner" id="secretWinner" class="bg-neutral-800 block p-0 w-full border-0 placeholder:text-gray-300 focus:ring-0" >
-                        <option disabled selected value="">Wähle einen Gewinner.</option>
-                        <option value="ALB">Albanien</option>
-                        <option value="BEL">Belgien</option>
-                        <option value="DEU">Deutschland</option>
-                        <option value="DNK">Dänemark</option>
-                        <option value="ENG">England</option>
-                        <option value="FRA">Frankreich</option>
-                        <option value="GEO">Georgien</option>
-                        <option value="ITA">Italien</option>
-                        <option value="HRV">Kroatien</option>
-                        <option value="NLD">Niederlande</option>
-                        <option value="AUT">Österreich</option>
-                        <option value="POL">Polen</option>
-                        <option value="PRT">Portugal</option>
-                        <option value="ROU">Rumänien</option>
-                        <option value="SCO">Schottland</option>
-                        <option value="CHE">Schweiz</option>
-                        <option value="SRB">Serbien</option>
-                        <option value="SVK">Slowakei</option>
-                        <option value="SVN">Slowenien</option>
-                        <option value="ESP">Spanien</option>
-                        <option value="CZE">Tschechien</option>
-                        <option value="TUR">Türkei</option>
-                        <option value="UKR">Ukraine</option>
-                        <option value="HUN">Ungarn</option>
-                    </select>
-                </div>
-
-                <Button name="Ändern" />
-            </form>
-
-            <script>
-                const errorMessageElement = document.getElementById("form-error")!;
-
-                document.querySelector('form')?.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    errorMessageElement.innerText = "";
-                    const formElement = e.target as HTMLFormElement;
-
-                    const response = await fetch(
-                        formElement.action,
-                        {
-                            method: formElement.method,
-                            body: new FormData(formElement)
-                        } as RequestInit
-                    );
-
-                    if (response.redirected) {
-                        window.location.assign(response.url);
-                    } else {
-                        errorMessageElement.innerText = (await response.json()).error;
-                    }
-                });
-                </script>
-        ) : null}
+        <div class="mb-2">
+            <span class="text-zinc-400 w-36 inline-block">Geheimtipp:</span> <Flag iso={userInfo.secretWinner} />
+        </div>
     </div>
 
             <div class="my-20 px-10 md:px-20">
@@ -168,9 +71,6 @@ const deadline = new Date('2024-06-14T21:00:00+02:00');
                         <div class="info-score">Ergebnis</div>
                         <div class="info-tip">Dein Tipp</div>
                     </div>
-
-
-
 
                         {data.tips.map((game, index) => (
 
