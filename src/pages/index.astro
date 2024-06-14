@@ -70,9 +70,6 @@ const groupedGames = validGames.reduce((acc, game) => {
 
     return acc;
 }, {});
-
-const deadline = new Date('2024-06-14T21:00:00+02:00');
-
 ---
 <LogginLayout title="Dashboard">
 
@@ -80,10 +77,6 @@ const deadline = new Date('2024-06-14T21:00:00+02:00');
         <div>
 
             <p class="text-zinc-400 pb-5">
-                {new Date() < deadline ? (
-                        <span>Du kannst noch in "Mein Konto" deinen Tipp und Geheimtipp ändern. Das ist nur bis heute um 21:00 Uhr möglich. Sobald das erste Spiel beginnt, kann man das nicht mehr ändern.</span>
-                    <br><br>
-                ) : null}
                 Du kannst die Ergebnisse der bisherigen Spiele anderer Nutzer sehen, indem du in der Tabelle auf deren Benutzernamen klickst.
             </p>
 
