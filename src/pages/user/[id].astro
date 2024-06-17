@@ -76,26 +76,27 @@ const userInfo = await getUserById(id);
 
                         {data.tips.map((game, index) => (
 
-                                <div class="match-grid bg-neutral-800 mt-4">
-                                    <div class="match-team-1 pt-5">
-                                        <Flag iso={game.team1.tla} /> {game.team1.name}
-                                    </div>
-                                    <div class="match-team-2 pb-5">
-                                        <Flag iso={game.team2.tla} /> {game.team2.name}
-                                    </div>
-                                    <div class="match-score-team-1 pt-5">{game.score_home}</div>
-                                    <div class="match-score-team-2 pb-5">{game.score_away}</div>
-                                    <div class="match-tip py-5">
-                                        <div class="match-tip-grid info-tip-score">
-                                            <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
-                                            <div class="match-tip-grid-score-last-box">
-                                                <div class="seven-segmnet text-xl">{game.score} Punkte</div>
+                                <a href={"/match/" + game.match_id} class="block">
+                                    <div class="match-grid bg-neutral-800 mt-4">
+                                        <div class="match-team-1 pt-5">
+                                            <Flag iso={game.team1.tla} /> {game.team1.name}
+                                        </div>
+                                        <div class="match-team-2 pb-5">
+                                            <Flag iso={game.team2.tla} /> {game.team2.name}
+                                        </div>
+                                        <div class="match-score-team-1 pt-5">{game.score_home}</div>
+                                        <div class="match-score-team-2 pb-5">{game.score_away}</div>
+                                        <div class="match-tip py-5">
+                                            <div class="match-tip-grid info-tip-score">
+                                                <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
+                                                <div class="match-tip-grid-score-last-box">
+                                                    <div class="seven-segmnet text-xl">{game.score} Punkte</div>
+                                                </div>
+                                                <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
                                             </div>
-                                            <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
                                         </div>
                                     </div>
-                                </div>
-
+                                </a>
                         ))}
                 </div>
 
