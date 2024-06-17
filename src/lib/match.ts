@@ -11,3 +11,7 @@ export async function getFutureMatch(): Promise<Match[] | undefined> {
 export async function getMatchById(id: number): Promise<Match | undefined> {
     return db.query.match.findFirst({where: eq(match.id, id)});
 }
+
+export async function getLiveMatch(): Promise<Match[] | undefined> {
+    return db.query.match.findMany({where: eq(match.status, 'IN_PLAY')});
+}

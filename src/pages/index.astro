@@ -1,6 +1,9 @@
 ---
+import fetchApi from "../core/api";
+import type {UserRating} from "../interfaces/table";
+
 import LogginLayout from "../layouts/LogginLayout.astro";
-import {getFutureMatch} from "../lib/match";
+import {getFutureMatch, getLiveMatch} from "../lib/match";
 import {getTipByUserAndMatchIds} from "../lib/tip";
 import Flag from '../components/Flag.astro';
 import Input from '../components/Input.astro';
@@ -70,6 +73,21 @@ const groupedGames = validGames.reduce((acc, game) => {
 
     return acc;
 }, {});
+
+let liveMatchesInfo = [];
+const liveMatches = await getLiveMatch();
+if(liveMatches.length > 0) {
+    const liveMatchIds = liveMatches.map(match => match.id);
+
+    const userData = await fetchApi<UserRating>('user/' + Astro.locals.user.id, 'data');
+
+    liveMatchesInfo = userData.tips.filter(tip => liveMatchIds.includes(Number(tip.match_id)));
+    liveMatchesInfo = liveMatchesInfo.map(matchInfo => {
+        const utcDate = new Date(matchInfo.date * 1000);
+        return {...matchInfo, utcDate};
+    });
+
+}
 ---
 <LogginLayout title="Dashboard">
 
@@ -77,7 +95,7 @@ const groupedGames = validGames.reduce((acc, game) => {
         <div>
 
             <p class="text-zinc-400 pb-5">
-                Du kannst die Ergebnisse der bisherigen Spiele anderer Nutzer sehen, indem du in der Tabelle auf deren Benutzernamen klickst.
+                <span class="text-white font-extrabold">Update 17.06.2024:</span> <br>Man kann jetzt die Live-Ergebnisse sehen. Außerdem kann man auf das Match klicken (live oder bei den Usern), um eine Ansicht zu öffnen, in der man das Match und die Tipps der anderen sehen kann.
             </p>
 
             <h1>Tabelle</h1>
@@ -86,16 +104,56 @@ const groupedGames = validGames.reduce((acc, game) => {
 
         <div>
             <h1>Spielplan</h1>
+
+            {liveMatchesInfo.length > 0 && (
+                    <div class="info-grid mt-8 pl-4 text-zinc-400 mb-4">
+                        <div class="info-date ">{formatDate(liveMatchesInfo[0].utcDate)}</div>
+                        <div class="info-score">Ergebnis</div>
+                        <div class="info-tip">Dein Tipp</div>
+                    </div>
+            )}
+
+            {liveMatchesInfo.map((game, index) => (
+                <a href={`/match/${game.match_id}`}>
+                    <div class="match-grid bg-neutral-700 mt-4">
+                        <div class="match-team-1 pt-5">
+                            <Flag iso={game.team1.tla} /> {game.team1.name}
+                        </div>
+                        <div class="match-team-2 pb-5">
+                            <Flag iso={game.team2.tla} /> {game.team2.name}
+                        </div>
+                        <div class="match-score-team-1 pt-5">{game.score_home}</div>
+                        <div class="match-score-team-2 pb-5">{game.score_away}</div>
+                        <div class="match-tip py-5">
+                            <div class="match-tip-grid info-tip-score">
+                                <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
+                                <div class="match-tip-grid-score-last-box text-center">
+                                    <div class={`seven-segmnet text-xl mx-auto
+                                        ${game.score === 4 ? 'text-green-500' :
+                                        game.score === 2 ? 'text-yellow-300' :
+                                        game.score === 0 ? 'text-red-500' :
+                                    ''}
+                                `}>
+
+                                        {game.score > 0 ? '+' : ''} {game.score} {game.score === 1 ? 'Punkt' : 'Punkte'}
+
+                                    </div>
+                                    <div class="text-white bg-red-500 p-1 mx-auto w-12 rounded-lg">Live</div>
+                                </div>
+                                <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            ))}
+
             <div>
                 {Object.entries(groupedGames).map(([date, games]) => (
                         <>
-
                             <div class="info-grid mt-8 pl-4 text-zinc-400 mb-4">
                                 <div class="info-date ">{date}</div>
                                 <div class="info-tip">Dein Tipp</div>
                             </div>
-
-
                                 {games.map(game => (
                                         <div class="error pl-4 pb-2 text-red-500 hidden" id=`form-error-${game.id}`></div>
                                         <div class="match-grid bg-neutral-800 mb-4">
