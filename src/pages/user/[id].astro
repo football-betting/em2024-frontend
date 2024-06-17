@@ -4,8 +4,6 @@ import fetchApi from "../../core/api";
 import type {UserRating} from "../../interfaces/table";
 import LogginLayout from "../../layouts/LogginLayout.astro";
 import Flag from "../../components/Flag.astro";
-import Button from "../../components/Button.astro";
-import Input from "../../components/Input.astro";
 import "../../styles/index.css";
 
 
@@ -28,6 +26,10 @@ const userInfo = await getUserById(id);
         <div class="mb-2">
             <span class="text-zinc-400 pr-4 w-44 inline-block">Name:</span>{userInfo.firstName} {userInfo.lastName}
         </div>
+        <div class="mb-2">
+            <span class="text-zinc-400 pr-4 w-44 inline-block">Standort:</span>{userInfo.department === 'Maintz' ? 'Mainz' : userInfo.department}
+        </div>
+
         <div class="mb-2">
             <span class="text-zinc-400 pr-4 w-44 inline-block">Platz:</span>{data.position}
         </div>
