@@ -16,7 +16,7 @@ export interface TeamMatch {
     tla: string;
 }
 
-interface MatchInfo {
+export interface MatchInfo {
     match_id: string;
     user: string;
     user_id: number;

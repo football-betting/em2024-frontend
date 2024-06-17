@@ -4,6 +4,7 @@ export interface Match {
     homeTeam: Team;
     awayTeam: Team;
     utcDate: Date;
+    status: string;
     score?: string;
     homeScore?: number;
     awayScore?: number;
@@ -12,4 +13,5 @@ export interface Match {
 export interface Team {
     crest: string;
     tla: string;
+    name: string;
 }

@@ -1,0 +1,100 @@
+---
+import {getMatchById} from "../../lib/match";
+import fetchApi from "../../core/api";
+import type {MatchInfo} from "../../interfaces/table";
+import LogginLayout from "../../layouts/LogginLayout.astro";
+import Flag from "../../components/Flag.astro";
+import "../../styles/index.css";
+
+
+const id = parseInt(Astro.params.id, 10);
+
+const user = Astro.locals.user;
+const game = await getMatchById(id);
+
+if (!user || !id || !game) {
+    return Astro.redirect("/");
+}
+const userId = Number(Astro.locals.user.id);
+
+
+const data = await fetchApi<MatchInfo[]>('game/' + id);
+data.sort((a, b) => b.score - a.score);
+
+function formatDate(date) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    return new Date(date).toLocaleDateString('de-DE', options);
+}
+function extractTime(date) {
+    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+
+function abbreviateUsername(username: string) {
+    if (username.length > 17) {
+        return username.slice(0, 14) + '...';
+    }
+    return username;
+}
+---
+<LogginLayout title="Spiel">
+    <div class="px-5 md:w-3/4 lg:w-3/5 mx-auto">
+        <h1 class="text-3xl text-center my-10">Spiel: {game.homeTeam.name} vs {game.awayTeam.name}</h1>
+        <div style="max-width: 750px" class="mx-auto my-10">
+
+            <div class="info-grid">
+                <div class="info-date">{formatDate(game.utcDate)}</div>
+                <div class="info-tip">Ergebnis</div>
+            </div>
+
+            <div class="match-grid bg-neutral-800 mt-4">
+                <div class="match-team-1 pt-5">
+                    <Flag iso={game.homeTeam.tla} /> {game.homeTeam.name}
+                </div>
+                <div class="match-team-2 pb-5">
+                    <Flag iso={game.awayTeam.tla} /> {game.awayTeam.name}
+                </div>
+                <div class="match-tip py-5">
+                    <div class="match-tip-grid info-tip-score">
+                        <div class="match-tip-grid-score1 score1 ">{game.homeScore}</div>
+                        <div class="match-tip-grid-score-last-box">
+                            {game.status !== 'IN_PLAY' ?
+                                    <div class="seven-segmnet text-xl">{extractTime(game.utcDate)}</div>
+                                :
+                                    <div class="rounded-lg bg-red-500 mx-5 py-2 text-sm">LIVE</div>
+                            }
+                        </div>
+                        <div class="match-tip-grid-score2 score2">{game.awayScore}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="min-w-full text-center mt-11">
+            <thead class="text-sm text-zinc-400 font-bold">
+            <tr>
+                <th class="w-2/6 text-left py-2 px-4 ">Name</th>
+                <th class=" py-2 px-4 ">Tipp 1</th>
+                <th class=" py-2 px-4 ">:</th>
+                <th class=" py-2 px-4">Tipp 2</th>
+                <th class="w-2/6 text-right py-2 px-4">Punkte</th>
+            </tr>
+            </thead>
+            <tbody>
+            {data.map((match, index) => (
+                    <tr class={`${index % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-800'} border-b-2 border-l-2 border-b-black ${match.user_id === userId ? 'border-l-slate-300' : 'border-l-zinc-400'}`}>
+                        <td class={`w-2/6 p-4 text-left ${match.user_id === userId && 'text-yellow-100 font-black'}`}><a href=`/user/${match.user_id}`>{abbreviateUsername(match.user)}</a></td>
+                        <td class={`p-4  ${match.user_id === userId && 'text-yellow-100 font-black'}`}>{match.tip_home !== null ? match.tip_home : '-'}</td>
+                        <td class={`p-4  ${match.user_id === userId && 'text-yellow-100 font-black'}`}>:</td>
+                        <td class={`p-4  ${match.user_id === userId && 'text-yellow-100 font-black'}`}>{match.tip_away !== null ? match.tip_away : '-'}</td>
+                        <td class={`w-2/6 p-4 text-right ${match.user_id === userId && 'font-black'}  
+                         ${match.score === 4 ? 'text-green-500' :
+                            match.score === 2 ? 'text-yellow-300' :
+                            match.score === 0 ? 'text-red-500' :
+                        ''}
+                        `}>{match.score > 0 ? '+' : ''} {match.score}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
+    </div>
+</LogginLayout>
