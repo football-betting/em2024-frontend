@@ -4,6 +4,7 @@ import type {UserRating} from "../interfaces/table";
 
 import LogginLayout from "../layouts/LogginLayout.astro";
 import {getFutureMatch, getLiveMatch} from "../lib/match";
+import {formatDate, filterValidGames, extractTime} from "../lib/function";
 import {getTipByUserAndMatchIds} from "../lib/tip";
 import Flag from '../components/Flag.astro';
 import Input from '../components/Input.astro';
@@ -16,19 +17,6 @@ if (!user) {
 }
 
 const matches = await getFutureMatch();
-
-function filterValidGames(game) {
-    return game.homeTeam && game.homeTeam.name && game.awayTeam && game.awayTeam.name;
-}
-
-function formatDate(date) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-    return new Date(date).toLocaleDateString('de-DE', options);
-}
-
-function extractTime(date) {
-    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-}
 
 const validGames = matches.filter(filterValidGames);
 

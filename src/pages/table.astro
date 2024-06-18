@@ -1,8 +1,8 @@
 ---
 import type {ApiRatingResponse} from "../interfaces/table";
-
 import LogginLayout from "../layouts/LogginLayout.astro";
 import fetchApi from '../core/api';
+import {abbreviateUsername} from '../lib/function';
 const user = Astro.locals.user;
 if (!user) {
     return Astro.redirect("/login");
@@ -15,13 +15,6 @@ const langenfeld = data.table.departments.Langenfeld;
 const mannheim = data.table.departments.Mannheim;
 const mainz  = data.table.departments.Maintz;
 const global = data.table.global;
-
-function abbreviateUsername(username: string) {
-    if (username.length > 17) {
-        return username.slice(0, 14) + '...';
-    }
-    return username;
-}
 ---
 <LogginLayout title="Tabelle">
     <div class="">

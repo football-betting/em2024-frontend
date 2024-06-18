@@ -13,10 +13,8 @@ const user = Astro.locals.user;
 if (!user || !id) {
     return Astro.redirect("/login");
 }
-const loggedUserId = user.id;
 
 const data = await fetchApi<UserRating>('user/' + id, 'data');
-
 const userInfo = await getUserById(id);
 ---
 <LogginLayout title="User">

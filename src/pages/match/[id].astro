@@ -5,6 +5,7 @@ import type {MatchInfo} from "../../interfaces/table";
 import LogginLayout from "../../layouts/LogginLayout.astro";
 import Flag from "../../components/Flag.astro";
 import "../../styles/index.css";
+import {abbreviateUsername, formatDate, extractTime} from '../../lib/function';
 
 
 const id = parseInt(Astro.params.id, 10);
@@ -15,26 +16,12 @@ const game = await getMatchById(id);
 if (!user || !id || !game) {
     return Astro.redirect("/");
 }
-const userId = Number(Astro.locals.user.id);
 
+const userId = Number(Astro.locals.user.id);
 
 const data = await fetchApi<MatchInfo[]>('game/' + id);
 data.sort((a, b) => b.score - a.score);
 
-function formatDate(date) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-    return new Date(date).toLocaleDateString('de-DE', options);
-}
-function extractTime(date) {
-    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-}
-
-function abbreviateUsername(username: string) {
-    if (username.length > 17) {
-        return username.slice(0, 14) + '...';
-    }
-    return username;
-}
 ---
 <LogginLayout title="Spiel">
     <div class="px-5 md:w-3/4 lg:w-3/5 mx-auto">
