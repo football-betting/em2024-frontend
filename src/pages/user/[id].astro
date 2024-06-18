@@ -68,7 +68,7 @@ const userInfo = await getUserById(id);
 
                     <div class="info-grid">
                         <div class="info-date"></div>
-                        <div class="info-score">Ergebnis</div>
+                        <div class="info-score col-start-3 sm:col-start-4">Ergebnis</div>
                         <div class="info-tip">Dein Tipp</div>
                     </div>
 
@@ -85,12 +85,12 @@ const userInfo = await getUserById(id);
                                         <div class="match-score-team-1 pt-5">{game.score_home}</div>
                                         <div class="match-score-team-2 pb-5">{game.score_away}</div>
                                         <div class="match-tip py-5">
-                                            <div class="match-tip-grid info-tip-score">
-                                                <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
+                                            <div class="grid match-tip-grid info-tip-score">
+                                                <div class="match-tip-grid-score1 score1 text-center sm:text-left">{game.tip_home}</div>
                                                 <div class="match-tip-grid-score-last-box">
                                                     <div class="seven-segmnet text-xl">{game.score} Punkte</div>
                                                 </div>
-                                                <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
+                                                <div class="match-tip-grid-score2 score2 text-center sm:text-left" >{game.tip_away}</div>
                                             </div>
                                         </div>
                                     </div>

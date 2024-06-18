@@ -95,8 +95,8 @@ if(liveMatches.length > 0) {
 
             {liveMatchesInfo.length > 0 && (
                     <div class="info-grid mt-8 pl-4 text-zinc-400 mb-4">
-                        <div class="info-date ">{formatDate(liveMatchesInfo[0].utcDate)}</div>
-                        <div class="info-score">Ergebnis</div>
+                        <div class="info-date hidden sm:block">{formatDate(liveMatchesInfo[0].utcDate)}</div>
+                        <div class="info-score col-start-2 xs:col-start-3 sm:col-start-4">Ergebnis</div>
                         <div class="info-tip">Dein Tipp</div>
                     </div>
             )}
@@ -113,8 +113,8 @@ if(liveMatches.length > 0) {
                         <div class="match-score-team-1 pt-5">{game.score_home}</div>
                         <div class="match-score-team-2 pb-5">{game.score_away}</div>
                         <div class="match-tip py-5">
-                            <div class="match-tip-grid info-tip-score">
-                                <div class="match-tip-grid-score1 score1 ">{game.tip_home}</div>
+                            <div class="grid match-tip-grid info-tip-score">
+                                <div class="match-tip-grid-score1 score1 text-center sm:text-left">{game.tip_home}</div>
                                 <div class="match-tip-grid-score-last-box text-center">
                                     <div class={`seven-segmnet text-xl mx-auto
                                         ${game.score === 4 ? 'text-green-500' :
@@ -128,7 +128,7 @@ if(liveMatches.length > 0) {
                                     </div>
                                     <div class="text-white bg-red-500 p-1 mx-auto w-12 rounded-lg">Live</div>
                                 </div>
-                                <div class="match-tip-grid-score2 score2">{game.tip_away}</div>
+                                <div class="match-tip-grid-score2 score2 text-center sm:text-left">{game.tip_away}</div>
                             </div>
                         </div>
                     </div>
@@ -139,8 +139,8 @@ if(liveMatches.length > 0) {
                 {Object.entries(groupedGames).map(([date, games]) => (
                         <>
                             <div class="info-grid mt-8 pl-4 text-zinc-400 mb-4">
-                                <div class="info-date ">{date}</div>
-                                <div class="info-tip">Dein Tipp</div>
+                                <div class="info-date">{date}</div>
+                                <div class="info-tip hidden xs:block">Dein Tipp</div>
                             </div>
                                 {games.map(game => (
                                         <div class="error pl-4 pb-2 text-red-500 hidden" id=`form-error-${game.id}`></div>
@@ -152,7 +152,7 @@ if(liveMatches.length > 0) {
                                                 <Flag iso={game.awayTla} /> {game.awayTeam}
                                             </div>
                                             <div class="match-tip">
-                                                <form class={`match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" data-form-id={game.id} action={`/api/tip/${game.id}`}>
+                                                <form class={`grid match-tip-grid form-tip-score ${game.tipHome !== null && game.tipAway !== null ? 'hidden' : ''}`} method="POST" data-form-id={game.id} action={`/api/tip/${game.id}`}>
                                                     <div class="match-tip-grid-score1 pr-4 pt-2">
                                                         <Input type="number" name="tip1" value={game.tipHome} background="bg-neutral-900" extraAttributes={{ min: 0, max: 20 }}/>
                                                     </div>
@@ -165,14 +165,14 @@ if(liveMatches.length > 0) {
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <div class={`match-tip-grid info-tip-score cursor-pointer ${game.tipHome !== null && game.tipAway !== null ? '' : 'hidden'}`}>
+                                                <div class={`grid match-tip-grid info-tip-score cursor-pointer ${game.tipHome !== null && game.tipAway !== null ? '' : 'hidden'}`}>
                                                     <div class="match-tip-grid-score1 score1">{game.tipHome}</div>
                                                     <div class="match-tip-grid-score-last-box">
                                                         <div class="seven-segmnet text-2xl">{game.time}</div>
                                                     </div>
                                                     <div class="match-tip-grid-score2 score2">{game.tipAway}</div>
                                                 </div>
-                                                <div class="match-tip-grid mt-10 ml-8 hidden loading-spinner" >
+                                                <div class="grid match-tip-grid mt-10 ml-8 hidden loading-spinner" >
                                                     <div class="loading"/>
                                                 </div>
                                             </div>

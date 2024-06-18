@@ -41,8 +41,8 @@ data.sort((a, b) => b.score - a.score);
                     <Flag iso={game.awayTeam.tla} /> {game.awayTeam.name}
                 </div>
                 <div class="match-tip py-5">
-                    <div class="match-tip-grid info-tip-score">
-                        <div class="match-tip-grid-score1 score1 ">{game.homeScore}</div>
+                    <div class="grid match-tip-grid info-tip-score">
+                        <div class="match-tip-grid-score1 score1 text-center sm:text-left">{game.homeScore}</div>
                         <div class="match-tip-grid-score-last-box">
                             {game.status !== 'IN_PLAY' ?
                                     <div class="seven-segmnet text-xl">{extractTime(game.utcDate)}</div>
@@ -50,7 +50,7 @@ data.sort((a, b) => b.score - a.score);
                                     <div class="rounded-lg bg-red-500 mx-5 py-2 text-sm">LIVE</div>
                             }
                         </div>
-                        <div class="match-tip-grid-score2 score2">{game.awayScore}</div>
+                        <div class="match-tip-grid-score2 score2 text-center sm:text-left">{game.awayScore}</div>
                     </div>
                 </div>
             </div>
